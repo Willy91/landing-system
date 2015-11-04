@@ -2,6 +2,8 @@ package com.landingsystem.mb.controller;
 	
 import com.landingsystem.mb.model.Door;
 import com.landingsystem.mb.model.Gear;
+import com.landingsystem.mb.view.CentralController;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -25,7 +27,8 @@ public class Main extends Application {
 			Scene scene = new Scene(root,400,400);
 			
 			primaryStage.setScene(scene);
-			
+			CentralController controller = loader.getController();
+			controller.setMainApp(this);
 	        
 			primaryStage.show();
 			
@@ -37,5 +40,21 @@ public class Main extends Application {
 	
 	public static void main(String[] args) {
 		launch(args);
+	}
+
+	public Gear getGear() {
+		return gear;
+	}
+
+	public void setGear(Gear gear) {
+		this.gear = gear;
+	}
+
+	public Door getDoor() {
+		return door;
+	}
+
+	public void setDoor(Door door) {
+		this.door = door;
 	}
 }

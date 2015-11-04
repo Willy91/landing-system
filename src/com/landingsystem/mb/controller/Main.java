@@ -1,5 +1,7 @@
 package com.landingsystem.mb.controller;
 	
+import com.landingsystem.mb.model.Gear;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -9,8 +11,10 @@ import javafx.fxml.FXMLLoader;
 
 
 public class Main extends Application {
+	private Gear gear;
 	@Override
 	public void start(Stage primaryStage) {
+		this.gear=new Gear();
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(Main.class.getResource("../view/Sample.fxml"));

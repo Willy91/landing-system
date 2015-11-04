@@ -37,18 +37,22 @@ public class CentralController {
 		//0,4s de fin
 		this.upPressed=true;
 		this.downPressed=false;
-		while(!downPressed || timing<MAX_RETRACTING_TIME || !done){
+		while(!downPressed && timing<MAX_RETRACTING_TIME && !done){
 			try {
-				Thread.sleep(100);
+				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+			
 			timing++;
+			System.out.println(timing);
+			
+			if(timing==280){
+				this.done=true;
+				this.mainApp.getGear().setOut(false);
+			}
 		}
-		if(timing==280){
-			this.done=true;
-			this.mainApp.getGear().setOut(false);
-		}
+		
 		this.upPressed=false;
 	}
 	

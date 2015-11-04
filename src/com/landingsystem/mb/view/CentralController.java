@@ -1,14 +1,13 @@
 package com.landingsystem.mb.view;
 
 import com.landingsystem.mb.controller.Main;
+import com.landingsystem.mb.model.RetractingThread;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
 public class CentralController {
-	public static int RETRACTING_TIME = 280;
-	private static int MAX_RETRACTING_TIME = 10000;
-	
+
 	@FXML
 	private Button upButton;
 	
@@ -20,7 +19,7 @@ public class CentralController {
 	private boolean upPressed;
 	private boolean downPressed;
 	private boolean done;
-	
+	private RetractingThread rt;
 	private int timing;
 	public CentralController(){
 		this.upPressed=false;
@@ -35,30 +34,16 @@ public class CentralController {
 		//unlock in down position 0,8s
 		//1,6s mouvement
 		//0,4s de fin
-		this.upPressed=true;
-		this.downPressed=false;
-		while(!downPressed && timing<MAX_RETRACTING_TIME && !done){
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			
-			timing++;
-			System.out.println(timing);
-			
-			if(timing==280){
-				this.done=true;
-				this.mainApp.getGear().setOut(false);
-			}
-		}
+		rt = new RetractingThread(this.mainApp.getGear());
+		rt.start();
 		
-		this.upPressed=false;
 	}
 	
 	@FXML
 	private void handleDownButton() {
 		System.out.println("down");
+		rt.stop();
+		this.downPressed=true;
 	}
 	
 	public void setMainApp(Main mainApp) {

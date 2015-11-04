@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 
 public class CentralController {
 	public static int RETRACTING_TIME = 280;
+	private static int MAX_RETRACTING_TIME = 10000;
 	
 	@FXML
 	private Button upButton;
@@ -18,11 +19,14 @@ public class CentralController {
 
 	private boolean upPressed;
 	private boolean downPressed;
+	private boolean done;
+	
 	private int timing;
 	public CentralController(){
 		this.upPressed=false;
 		this.downPressed=false;
-		this.timing=280; // temps de retractation des roues 
+		this.timing=0; // temps de retractation des roues 
+		this.done=false;
 	}
 	
 	@FXML
@@ -33,16 +37,16 @@ public class CentralController {
 		//0,4s de fin
 		this.upPressed=true;
 		this.downPressed=false;
-		while(!downPressed || timing<RETRACTING_TIME){
+		while(!downPressed || timing<MAX_RETRACTING_TIME || !done){
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			timing--;
+			timing++;
 		}
-		if(timing==0){
+		if(timing==280){
+			this.done=true;
 			this.mainApp.getGear().setOut(false);
 		}
 		this.upPressed=false;

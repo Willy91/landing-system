@@ -1,18 +1,11 @@
 package com.landingsystem.mb.model;
 
-public class Gear {
-	private boolean out;
-	
-	public boolean isOut() {
-		return out;
-	}
-
-	public void setOut(boolean out) {
-		this.out = out;
-	}
+public class Gear extends Element  {
 
 	public Gear(){
-		this.out=true;
+		super();
+		super.MAX_RETRACTING_TIME = 10000;
+		super.USUAL_RETRACTING_TIME = 280;
 	}
 
 }

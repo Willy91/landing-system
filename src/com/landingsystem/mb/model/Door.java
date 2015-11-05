@@ -1,14 +1,8 @@
 package com.landingsystem.mb.model;
 
-public class Door {
-	private boolean open;
-	public boolean isOpen() {
-		return open;
-	}
-	public void setOpen(boolean open) {
-		this.open = open;
-	}
+public class Door extends Element {
 	public Door(){
-		this.open = true;
-	}
+		super();
+		super.MAX_OUTGOING_TIME = 7000;
+		super.USUAL_OUTGOING_TIME = 150;	}
 }

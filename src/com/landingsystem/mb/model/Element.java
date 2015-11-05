@@ -7,6 +7,8 @@ public abstract class Element {
 	
 	protected int USUAL_RETRACTING_TIME;
 	protected int MAX_RETRACTING_TIME;
+	protected int USUAL_OUTGOING_TIME;
+	protected int MAX_OUTGOING_TIME;
 
 	public boolean isStatus() {
 		return status;

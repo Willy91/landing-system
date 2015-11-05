@@ -34,9 +34,10 @@ public class CentralController {
 		//unlock in down position 0,8s
 		//1,6s mouvement
 		//0,4s de fin
-		rt = new RetractingThread(this.mainApp.getGear());
-		rt.start();
-		
+		if(!this.mainApp.getGear().isStatus()) {
+			rt = new RetractingThread(this.mainApp.getGear());
+			rt.start();
+		}
 	}
 	
 	@FXML

@@ -125,6 +125,7 @@ public class CentralController {
 			
 			ot_d.setOnSucceeded((WorkerStateEvent event) -> {
 				System.out.println("porte ouverte");
+				ot_d.reset();
 				this.mainApp.getDoor().setMoving(false);
 				this.mainApp.getDoor().setStatus(true);
 				
@@ -136,6 +137,7 @@ public class CentralController {
 			});
 			
 			ot_g.setOnSucceeded((WorkerStateEvent event) -> {
+				ot_g.reset();
 				this.mainApp.getGear().setStatus(true);
 				this.mainApp.getGear().setMoving(false);
 				System.out.println("down on succed");
@@ -148,6 +150,7 @@ public class CentralController {
 			});
 
 			rt_d.setOnSucceeded((WorkerStateEvent event) -> {
+				rt_d.reset();
 				this.mainApp.getDoor().setStatus(false);
 				frontDoor.setImage(door_closed);
 			});

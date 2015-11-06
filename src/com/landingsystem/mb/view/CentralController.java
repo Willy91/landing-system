@@ -21,8 +21,6 @@ public class CentralController {
 	
 	private Main mainApp;
 	private Scene scene; 
-	private boolean upPressed;
-	private boolean downPressed;
 	private boolean done;
 	private RetractingThread rt;
 	private OutgoingThread ot;
@@ -30,8 +28,6 @@ public class CentralController {
 	private int timing;
 	
 	public CentralController(){
-		this.upPressed=false;
-		this.downPressed=false;
 		this.timing=0; // temps de retractation des roues 
 		this.done=false;
 	}
@@ -52,10 +48,6 @@ public class CentralController {
 				rt.start();
 				
 			});
-			
-			
-			
-			//System.out.println("roue fermée");
 		}
 	}
 	

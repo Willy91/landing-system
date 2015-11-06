@@ -3,41 +3,33 @@ package com.landingsystem.mb.model;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 
-public abstract class CentralThread extends Service<Element> {
+public abstract class CentralThread extends Service<Integer> {
 
 	protected int USUAL_TIME;
 	protected int MAX_TIME;
 	private int timing;
 	private boolean done;
-	private Element el;
 	public volatile boolean flag;
 
 	public CentralThread(Element el) {
-		this.timing = el.getActualTime();
+		this.timing = 0;
 		this.done = false;
-		this.el = el;
 		this.flag = true;
 	}
 
 	@Override
-	protected Task<Element> createTask() {
-		return new Task<Element>() {
+	protected Task<Integer> createTask() {
+		return new Task<Integer>() {
 			@Override
-			protected Element call() throws Exception {
+			protected Integer call() throws Exception {
 				while (timing < MAX_TIME && !done && flag) {
 					System.out.println(timing);
 					try {
-						el.setActualTime(timing);
-
-						updateValue(el);
-
 						Thread.sleep(10);
 					} catch (InterruptedException e) {
 						if (isCancelled()) {
-							el.setActualTime(timing);
-							updateValue(el);
 
-							return el;
+							return timing;
 						}
 						e.printStackTrace();
 					}
@@ -46,14 +38,12 @@ public abstract class CentralThread extends Service<Element> {
 
 					if (timing == USUAL_TIME) {
 						done = true;
-						el.setStatus(!el.isStatus());
 					}
 					if (isCancelled()) {
-						el.setActualTime(timing);
-						return el;
+						return timing;
 					}
 				}
-				return el;
+				return timing;
 			}
 		};
 	}

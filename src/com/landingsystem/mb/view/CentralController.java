@@ -20,10 +20,10 @@ public class CentralController {
 
 	@FXML
 	private Button upButton;
-	
+
 	@FXML
 	private Button downButton;
-	
+
 	@FXML
 	private ImageView frontDoor;
 	@FXML
@@ -36,16 +36,16 @@ public class CentralController {
 	private ImageView rightGear;
 	@FXML
 	private ImageView frontGear;
-	
+
 	private Main mainApp;
-	private Scene scene; 
+	private Scene scene;
 	private boolean done;
 	private RetractingThread rt_g;
 	private OutgoingThread ot_d;
 	private OutgoingThread ot_g;
 	private RetractingThread rt_d;
 	private int timing;
-	
+
 	private Text t_door;
 	private Text t_gear;
 	private Image door_closed;
@@ -54,112 +54,101 @@ public class CentralController {
 	private Image gear_close;
 	private Image gear_opened;
 	private Image gear_moving;
-	
-	public CentralController(){
-		this.timing=0; // temps de retractation des roues 
-		this.done=false;
-		door_closed=new Image("file:res/door2_closed.jpg");
-		door_opened=new Image("file:res/door2_opened.jpg");
+
+	public CentralController() {
+		this.timing = 0; // temps de retractation des roues
+		this.done = false;
+		door_closed = new Image("file:res/door2_closed.jpg");
+		door_opened = new Image("file:res/door2_opened.jpg");
 		door_moving = new Image("file:res/door2_moving.jpg");
-		
-		gear_close=new Image("file:res/gear2_retracted.jpg");
-		gear_moving=new Image("file:res/gear2_moving.jpg");
-		gear_opened=new Image("file:res/gear2_extracted.jpg");
-		
-		
+
+		gear_close = new Image("file:res/gear2_retracted.jpg");
+		gear_moving = new Image("file:res/gear2_moving.jpg");
+		gear_opened = new Image("file:res/gear2_extracted.jpg");
+
 	}
-	
+
 	@FXML
 	private void handleUpButton() {
 		System.out.println("up");
 		frontDoor.setImage(door_moving);
-		//unlock in down position 0,8s
-		//1,6s mouvement
-		//0,4s de fin
-		if(!this.mainApp.getGear().isStatus()) {
-			ot_d = new OutgoingThread(this.mainApp.getDoor());
-			rt_g = new RetractingThread(this.mainApp.getGear());
-			rt_d = new RetractingThread(this.mainApp.getDoor());
+		// unlock in down position 0,8s
+		// 1,6s mouvement
+		// 0,4s de fin
+		if (!this.mainApp.getGear().isStatus()) {
+			
 
-			
-			
-			ot_d.setOnSucceeded((WorkerStateEvent event)-> {
+			ot_d.setOnSucceeded((WorkerStateEvent event) -> {
 				System.out.println("porte ouverte");
-				this.mainApp.setDoor((Door)ot_d.getValue());
+				this.mainApp.setDoor((Door) ot_d.getValue());
 				frontDoor.setImage(door_opened);
 				frontGear.setImage(gear_moving);
 				rt_g.start();
-			});	
-			rt_g.setOnSucceeded((WorkerStateEvent event)-> {
-				this.mainApp.setGear((Gear)rt_g.getValue());
+			});
+			rt_g.setOnSucceeded((WorkerStateEvent event) -> {
+				this.mainApp.setGear((Gear) rt_g.getValue());
 				frontGear.setImage(gear_close);
 				rt_d.start();
 				frontDoor.setImage(door_moving);
-			});	
-			
-			rt_d.setOnSucceeded((WorkerStateEvent event)-> {
-				this.mainApp.setDoor((Door)rt_d.getValue());
-				frontDoor.setImage(door_closed);
-			});	
-			
-			ot_d.start();
+			});
 
+			rt_d.setOnSucceeded((WorkerStateEvent event) -> {
+				this.mainApp.setDoor((Door) rt_d.getValue());
+				frontDoor.setImage(door_closed);
+			});
+
+			ot_d.start();
 
 		}
 	}
-	
+
 	@FXML
 	private void handleDownButton() {
 		System.out.println("down");
-		if(ot_d.isRunning()){
+		if (ot_d.isRunning()) {
 			ot_d.cancel();
-			this.mainApp.setDoor((Door)ot_d.getValue());
+			this.mainApp.setDoor((Door) ot_d.getValue());
 		}
-		if(rt_g.isRunning()){ 
+		if (rt_g.isRunning()) {
 			rt_g.cancel();
-			this.mainApp.setGear((Gear)rt_g.getValue());
+			this.mainApp.setGear((Gear) rt_g.getValue());
 		}
-		if(rt_d.isRunning()) {
+		if (rt_d.isRunning()) {
 			rt_d.cancel();
-			this.mainApp.setDoor((Door)rt_d.getValue());
+			this.mainApp.setDoor((Door) rt_d.getValue());
 		}
-		
-		
 
-			ot_d = new OutgoingThread(this.mainApp.getDoor());
-			ot_g = new OutgoingThread(this.mainApp.getGear());
-			rt_d = new RetractingThread(this.mainApp.getDoor());
-
-			
-			ot_d.setOnSucceeded((WorkerStateEvent event)-> {
-				System.out.println("porte ouverte");
-				frontDoor.setImage(door_opened);
-				frontGear.setImage(gear_moving);
-				ot_g.restart();
-			});
-			ot_g.setOnSucceeded((WorkerStateEvent event)-> {
-				frontGear.setImage(gear_opened);
-				frontDoor.setImage(door_moving);
-				System.out.println("roue sortie");
-				rt_d.restart();
-			});
-			rt_d.setOnSucceeded((WorkerStateEvent event)-> {
-				System.out.println("end door : "+this.mainApp.getDoor().isStatus()+this.mainApp.getGear().isStatus());
-				frontDoor.setImage(door_closed);
-				t_gear.setText(Boolean.toString(this.mainApp.getGear().isStatus()));
-				t_door.setText(Boolean.toString(this.mainApp.getDoor().isStatus()));
-				
-			});
+		ot_d.setOnSucceeded((WorkerStateEvent event) -> {
+			System.out.println("porte ouverte");
+			frontDoor.setImage(door_opened);
+			frontGear.setImage(gear_moving);
+			ot_g.restart();
+		});
+		ot_g.setOnSucceeded((WorkerStateEvent event) -> {
+			frontGear.setImage(gear_opened);
 			frontDoor.setImage(door_moving);
-			ot_d.restart();
-		
+			System.out.println("roue sortie");
+			rt_d.restart();
+		});
+		rt_d.setOnSucceeded((WorkerStateEvent event) -> {
+			System.out.println("end door : "
+					+ this.mainApp.getDoor().isStatus()
+					+ this.mainApp.getGear().isStatus());
+			frontDoor.setImage(door_closed);
+			t_gear.setText(Boolean.toString(this.mainApp.getGear().isStatus()));
+			t_door.setText(Boolean.toString(this.mainApp.getDoor().isStatus()));
+
+		});
+		frontDoor.setImage(door_moving);
+		ot_d.restart();
+
 	}
-	
-	public void setMainApp(Main mainApp,Scene scene) {
+
+	public void setMainApp(Main mainApp, Scene scene) {
 		this.mainApp = mainApp;
 		this.scene = scene;
-		this.t_gear = (Text)this.scene.lookup("#front_gear_status");
-		this.t_door =(Text)this.scene.lookup("#front_gear_status");
+		this.t_gear = (Text) this.scene.lookup("#front_gear_status");
+		this.t_door = (Text) this.scene.lookup("#front_gear_status");
 		ot_d = new OutgoingThread(this.mainApp.getDoor());
 		ot_g = new OutgoingThread(this.mainApp.getGear());
 		rt_g = new RetractingThread(this.mainApp.getGear());

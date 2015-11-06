@@ -2,7 +2,7 @@ package com.landingsystem.mb.model;
 
 public abstract class Element {
 	private boolean status;
-	private int actualTime;
+	private boolean moving;
 	//true if door is open and gear is out
 	//false if door is closed and gear is in
 
@@ -11,9 +11,6 @@ public abstract class Element {
 	protected int USUAL_OUTGOING_TIME;
 	protected int MAX_OUTGOING_TIME;
 
-	public Element(){
-		this.actualTime=0;
-	}
 	public boolean isStatus() {
 		return status;
 	}
@@ -21,11 +18,13 @@ public abstract class Element {
 	public void setStatus(boolean status) {
 		this.status = status;
 	}
-	public int getActualTime() {
-		return actualTime;
+	
+
+	public boolean isMoving() {
+		return moving;
 	}
-	public void setActualTime(int actualTime) {
-		this.actualTime = actualTime;
+	public void setMoving(boolean moving) {
+		this.moving = moving;
 	}
 	
 }

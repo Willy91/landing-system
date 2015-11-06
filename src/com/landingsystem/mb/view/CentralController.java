@@ -5,6 +5,7 @@ import com.landingsystem.mb.model.OutgoingThread;
 import com.landingsystem.mb.model.RetractingThread;
 
 import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
@@ -42,30 +43,16 @@ public class CentralController {
 			ot = new OutgoingThread(this.mainApp.getDoor());
 			rt = new RetractingThread(this.mainApp.getGear());
 			
-			Task task = new Task() {
-
-				@Override
-				protected Object call() throws Exception {
-					ot.start();
-					System.out.println("porte ouverte");
-					try {
-						ot.join();
-					} catch (InterruptedException e) {
-						//e.printStackTrace();
-					}
-					rt.start();
-					try {
-						rt.join();
-					} catch (InterruptedException e) {
-						//e.printStackTrace();
-					}
-					return null;
-				}	
-			};
+			ot.start();
+			ot.setOnSucceeded((WorkerStateEvent event)-> {
+				System.out.println("porte ouverte");
+				rt.start();
+				
+			});
 			
 			
 			
-			System.out.println("roue fermée");
+			//System.out.println("roue fermée");
 		}
 	}
 	

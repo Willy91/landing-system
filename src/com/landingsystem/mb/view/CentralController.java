@@ -57,13 +57,13 @@ public class CentralController {
 	public CentralController(){
 		this.timing=0; // temps de retractation des roues 
 		this.done=false;
-		door_closed=new Image("/res/door2_closed.jpg");
-		/*door_opened=new Image("@../../../../../res/door2_opened.jpg");
-		door_moving=new Image("@../../../../../res/door2_moving.jpg");
+		door_closed=new Image("file:../../../../../res/door2_closed.jpg");
+		door_opened=new Image("file:../../../../../res/door2_opened.jpg");
+		door_moving=new Image("file:../../../../../res/door2_moving.jpg");
 		
-		gear_close=new Image("@../../../../../res/gear2_retracted.jpg");
-		gear_moving=new Image("@../../../../../res/gear2_moving.jpg");
-		gear_opened=new Image("@../../../../../res/gear2_extracted.jpg");*/
+		gear_close=new Image("file:../../../../../res/gear2_retracted.jpg");
+		gear_moving=new Image("file:../../../../../res/gear2_moving.jpg");
+		gear_opened=new Image("file:../../../../../res/gear2_extracted.jpg");
 	}
 	
 	@FXML
@@ -87,7 +87,7 @@ public class CentralController {
 				this.mainApp.setGear((Gear)rt_g.getValue());
 				rt_d.start();
 			});	
-			
+			this.frontDoor.setImage(this.door_moving);
 			ot_d.start();
 
 

@@ -82,11 +82,12 @@ public class CentralController {
 				System.out.println("porte ouverte");
 				this.mainApp.setDoor((Door)ot_d.getValue());
 				frontDoor.setImage(door_opened);
+				frontGear.setImage(gear_moving);
 				rt_g.start();
 			});	
 			rt_g.setOnSucceeded((WorkerStateEvent event)-> {
-				System.out.println("porte ouverte");
 				this.mainApp.setGear((Gear)rt_g.getValue());
+				frontGear.setImage(gear_close);
 				rt_d.start();
 			});	
 			

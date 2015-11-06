@@ -78,6 +78,7 @@ public class CentralController {
 			ot_d = new OutgoingThread(this.mainApp.getDoor());
 			rt_g = new RetractingThread(this.mainApp.getGear());
 			rt_d = new RetractingThread(this.mainApp.getDoor());
+			
 			ot_d.setOnSucceeded((WorkerStateEvent event)-> {
 				System.out.println("porte ouverte");
 				this.mainApp.setDoor((Door)ot_d.getValue());
@@ -89,6 +90,12 @@ public class CentralController {
 				this.mainApp.setGear((Gear)rt_g.getValue());
 				frontGear.setImage(gear_close);
 				rt_d.start();
+				frontDoor.setImage(door_moving);
+			});	
+			
+			rt_d.setOnSucceeded((WorkerStateEvent event)-> {
+				this.mainApp.setDoor((Door)rt_d.getValue());
+				frontDoor.setImage(door_closed);
 			});	
 			
 			ot_d.start();

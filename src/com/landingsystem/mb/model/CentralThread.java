@@ -27,11 +27,16 @@ public abstract class CentralThread extends Service<Element> {
 				while (timing < MAX_TIME && !done && flag) {
 					System.out.println(timing);
 					try {
+						el.setActualTime(timing);
+
+						updateValue(el);
+
 						Thread.sleep(10);
 					} catch (InterruptedException e) {
 						if (isCancelled()) {
-							updateValue(el);
 							el.setActualTime(timing);
+							updateValue(el);
+
 							return el;
 						}
 						e.printStackTrace();

@@ -1,10 +1,13 @@
 package com.landingsystem.mb.view;
 
+import java.io.File;
+
 import com.landingsystem.mb.controller.Main;
 import com.landingsystem.mb.model.Door;
 import com.landingsystem.mb.model.Gear;
 import com.landingsystem.mb.model.OutgoingThread;
 import com.landingsystem.mb.model.RetractingThread;
+
 import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -55,18 +58,19 @@ public class CentralController {
 	public CentralController(){
 		this.timing=0; // temps de retractation des roues 
 		this.done=false;
-		door_closed=new Image("file:../../../../../res/door2_closed.jpg");
-		door_opened=new Image("file:../../../../../res/door2_opened.jpg");
-		door_moving=new Image("file:../../../../../res/door2_moving.jpg");
+		door_closed=new Image("file:res/door2_closed.jpg");
+		door_opened=new Image("file:res/door2_opened.jpg");
+		door_moving = new Image("file:res/door2_moving.jpg");
 		
-		gear_close=new Image("file:../../../../../res/gear2_retracted.jpg");
-		gear_moving=new Image("file:../../../../../res/gear2_moving.jpg");
-		gear_opened=new Image("file:../../../../../res/gear2_extracted.jpg");
+		gear_close=new Image("file:res/gear2_retracted.jpg");
+		gear_moving=new Image("file:res/gear2_moving.jpg");
+		gear_opened=new Image("file:res/gear2_extracted.jpg");
 	}
 	
 	@FXML
 	private void handleUpButton() {
 		System.out.println("up");
+		frontDoor.setImage(door_moving);
 		//unlock in down position 0,8s
 		//1,6s mouvement
 		//0,4s de fin
@@ -77,7 +81,7 @@ public class CentralController {
 			ot_d.setOnSucceeded((WorkerStateEvent event)-> {
 				System.out.println("porte ouverte");
 				this.mainApp.setDoor((Door)ot_d.getValue());
-				this.frontDoor.setImage(this.door_opened);
+				frontDoor.setImage(door_opened);
 				rt_g.start();
 			});	
 			rt_g.setOnSucceeded((WorkerStateEvent event)-> {
@@ -85,7 +89,7 @@ public class CentralController {
 				this.mainApp.setGear((Gear)rt_g.getValue());
 				rt_d.start();
 			});	
-			this.frontDoor.setImage(this.door_moving);
+			
 			ot_d.start();
 
 

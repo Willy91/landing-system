@@ -11,6 +11,7 @@ import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
 public class CentralController {
@@ -20,6 +21,19 @@ public class CentralController {
 	
 	@FXML
 	private Button downButton;
+	
+	@FXML
+	private ImageView frontDoor;
+	@FXML
+	private ImageView leftDoor;
+	@FXML
+	private ImageView rightDoor;
+	@FXML
+	private ImageView leftGear;
+	@FXML
+	private ImageView rightGear;
+	@FXML
+	private ImageView frontGear;
 	
 	private Main mainApp;
 	private Scene scene; 

@@ -99,23 +99,27 @@ public class CentralController {
 				// cas porte moving et gear false
 				//cas 
 		if(this.mainApp.getDoor().isMoving() && !this.mainApp.getGear().isStatus()){
-			//cas porte moving et gear à l'intérieur
-			ot_d.cancel();
-			rt_d.start();
+			//cas porte moving et gear à l'interieur
+			rt_d.setOnCancelled((WorkerStateEvent event) -> {
+				ot_d.restart();
+			});
+			rt_d.cancel();
 		}
 		else if(this.mainApp.getDoor().isStatus() && this.mainApp.getGear().isMoving()){
 			//cas porte sortie et gear sortante
-			ot_g.cancel();
-			rt_g.start();
+			rt_g.setOnCancelled((WorkerStateEvent event) -> {
+				ot_g.restart();
+			});
+			rt_g.cancel();
 		}
 		else if(this.mainApp.getDoor().isMoving() && this.mainApp.getGear().isStatus()){
 			//cas porte se rentrant et gear sortie
 			System.out.println("dedans");
-			ot_d.cancel();
 			ot_d.setOnCancelled((WorkerStateEvent event) -> {
 				rt_d.restart();
-
 			});
+			ot_d.cancel();
+
 		}
 		else if (!this.mainApp.getDoor().isMoving() && !this.mainApp.getGear().isStatus()) {
 			//cas initial

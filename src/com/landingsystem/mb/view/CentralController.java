@@ -77,19 +77,7 @@ public class CentralController {
 		// 0,4s de fin
 		if (this.mainApp.getGear().isStatus()) {
 			
-
 			
-			rt_g.setOnSucceeded((WorkerStateEvent event) -> {
-				this.mainApp.getGear().setStatus(false);
-				this.mainApp.getGear().setMoving(false);
-				rt_g.reset();
-
-				frontGear.setImage(gear_close);
-				frontDoor.setImage(door_moving);
-				
-				rt_d.start();
-				mainApp.getDoor().setMoving(true);
-			});
 
 			ot_d.start();
 			mainApp.getDoor().setMoving(true);
@@ -107,21 +95,7 @@ public class CentralController {
 		if (!this.mainApp.getGear().isStatus()) {
 			
 			
-			ot_g.setOnSucceeded((WorkerStateEvent event) -> {
-				ot_g.reset();
-				this.mainApp.getGear().setStatus(true);
-				this.mainApp.getGear().setMoving(false);
-				System.out.println("down on succed");
 
-				frontGear.setImage(gear_opened);
-				frontDoor.setImage(door_moving);
-				
-				rt_d.start();
-				mainApp.getDoor().setMoving(true);
-			});
-
-			
-			
 			frontDoor.setImage(door_moving);
 			ot_d.start();
 			mainApp.getDoor().setMoving(true);
@@ -160,6 +134,31 @@ public class CentralController {
 				rt_g.start();
 			}
 			this.mainApp.getGear().setMoving(true);
+		});
+		
+		rt_g.setOnSucceeded((WorkerStateEvent event) -> {
+			this.mainApp.getGear().setStatus(false);
+			this.mainApp.getGear().setMoving(false);
+			rt_g.reset();
+
+			frontGear.setImage(gear_close);
+			frontDoor.setImage(door_moving);
+			
+			rt_d.start();
+			mainApp.getDoor().setMoving(true);
+		});
+		
+		ot_g.setOnSucceeded((WorkerStateEvent event) -> {
+			ot_g.reset();
+			this.mainApp.getGear().setStatus(true);
+			this.mainApp.getGear().setMoving(false);
+			System.out.println("down on succed");
+
+			frontGear.setImage(gear_opened);
+			frontDoor.setImage(door_moving);
+			
+			rt_d.start();
+			mainApp.getDoor().setMoving(true);
 		});
 	}
 }

@@ -131,13 +131,14 @@ public class CentralController {
 				frontDoor.setImage(door_opened);
 				frontGear.setImage(gear_moving);
 				
-				rt_g.start();
+				ot_g.start();
 				this.mainApp.getGear().setMoving(true);
 			});
 			
 			ot_g.setOnSucceeded((WorkerStateEvent event) -> {
 				this.mainApp.getGear().setStatus(true);
 				this.mainApp.getGear().setMoving(false);
+				System.out.println("down on succed");
 
 				frontGear.setImage(gear_opened);
 				frontDoor.setImage(door_moving);

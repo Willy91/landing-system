@@ -3,7 +3,7 @@ package com.landingsystem.mb.model;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 
-public abstract class CentralThread extends Service<Void> {
+public abstract class CentralThread extends Service<Element> {
 
 	protected int USUAL_TIME;
 	protected int MAX_TIME;
@@ -20,10 +20,10 @@ public abstract class CentralThread extends Service<Void> {
 	}
 
 	@Override
-	protected Task<Void> createTask() {
-		return new Task<Void>() {
+	protected Task<Element> createTask() {
+		return new Task<Element>() {
 			@Override
-			protected Void call() throws Exception {
+			protected Element call() throws Exception {
 				while (timing < MAX_TIME && !done && flag) {
 					System.out.println(timing);
 					try {
@@ -38,8 +38,12 @@ public abstract class CentralThread extends Service<Void> {
 						done = true;
 						el.setStatus(!el.isStatus());
 					}
+					if (isCancelled()) {
+						el.setActualTime(timing);
+						return el;
+				      }
 				}
-				return null;
+				return el;
 			}
 		};
 	}

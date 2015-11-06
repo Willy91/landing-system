@@ -1,6 +1,7 @@
 package com.landingsystem.mb.view;
 
 import com.landingsystem.mb.controller.Main;
+import com.landingsystem.mb.model.Door;
 import com.landingsystem.mb.model.OutgoingThread;
 import com.landingsystem.mb.model.RetractingThread;
 
@@ -49,11 +50,9 @@ public class CentralController {
 			ot.start();
 			ot.setOnSucceeded((WorkerStateEvent event)-> {
 				System.out.println("porte ouverte");
+				this.mainApp.setDoor((Door)ot.getValue());
 				rt.start();
-				
 			});
-			
-			
 			
 			//System.out.println("roue fermée");
 		}

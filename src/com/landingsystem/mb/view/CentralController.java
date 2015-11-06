@@ -5,8 +5,6 @@ import com.landingsystem.mb.model.Door;
 import com.landingsystem.mb.model.Gear;
 import com.landingsystem.mb.model.OutgoingThread;
 import com.landingsystem.mb.model.RetractingThread;
-
-import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -84,6 +82,10 @@ public class CentralController {
 		System.out.println("down");
 		//ot.flag = false;
 		//rt.flag = false;
+		if(ot_d.isRunning()) ot_d.cancel();
+		if(rt_g.isRunning()) rt_g.cancel();
+		if(ot_g.isRunning()) ot_g.cancel();
+		
 		if(this.mainApp.getGear().isStatus()){
 			this.ot_d=new OutgoingThread(this.mainApp.getDoor());
 			this.ot_g=new OutgoingThread(this.mainApp.getGear());

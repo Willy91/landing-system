@@ -36,8 +36,6 @@ public class CentralController {
 	public CentralController(){
 		this.timing=0; // temps de retractation des roues 
 		this.done=false;
-		this.t_gear = (Text)this.scene.lookup("#front_gear_status");
-		this.t_door =(Text)this.scene.lookup("#front_gear_status");
 	}
 	
 	@FXML
@@ -98,6 +96,8 @@ public class CentralController {
 	public void setMainApp(Main mainApp,Scene scene) {
 		this.mainApp = mainApp;
 		this.scene = scene;
-		
+		this.t_gear = (Text)this.scene.lookup("#front_gear_status");
+		this.t_door =(Text)this.scene.lookup("#front_gear_status");
+
 	}
 }

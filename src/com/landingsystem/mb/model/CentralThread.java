@@ -13,7 +13,7 @@ public abstract class CentralThread extends Service<Void> {
 	public volatile boolean flag;
 
 	public CentralThread(Element el) {
-		this.timing = 0;
+		this.timing = el.getActualTime();
 		this.done = false;
 		this.el = el;
 		this.flag = true;
@@ -22,7 +22,6 @@ public abstract class CentralThread extends Service<Void> {
 	@Override
 	protected Task<Void> createTask() {
 		return new Task<Void>() {
-
 			@Override
 			protected Void call() throws Exception {
 				while (timing < MAX_TIME && !done && flag) {

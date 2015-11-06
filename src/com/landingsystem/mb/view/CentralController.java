@@ -75,29 +75,38 @@ public class CentralController {
 		// unlock in down position 0,8s
 		// 1,6s mouvement
 		// 0,4s de fin
-		if (!this.mainApp.getGear().isStatus()) {
+		if (this.mainApp.getGear().isStatus()) {
 			
 
 			ot_d.setOnSucceeded((WorkerStateEvent event) -> {
 				System.out.println("porte ouverte");
-				this.mainApp.setDoor((Door) ot_d.getValue());
+				this.mainApp.getDoor().setMoving(false);
+				this.mainApp.getDoor().setStatus(true);
+				
 				frontDoor.setImage(door_opened);
 				frontGear.setImage(gear_moving);
+				
 				rt_g.start();
+				this.mainApp.getGear().setMoving(true);
 			});
 			rt_g.setOnSucceeded((WorkerStateEvent event) -> {
-				this.mainApp.setGear((Gear) rt_g.getValue());
+				this.mainApp.getGear().setStatus(false);
+				this.mainApp.getGear().setMoving(false);
+
 				frontGear.setImage(gear_close);
-				rt_d.start();
 				frontDoor.setImage(door_moving);
+				
+				rt_d.start();
+				mainApp.getDoor().setMoving(true);
 			});
 
 			rt_d.setOnSucceeded((WorkerStateEvent event) -> {
-				this.mainApp.setDoor((Door) rt_d.getValue());
+				this.mainApp.getDoor().setStatus(false);
 				frontDoor.setImage(door_closed);
 			});
 
 			ot_d.start();
+			mainApp.getDoor().setMoving(true);
 
 		}
 	}
@@ -105,43 +114,44 @@ public class CentralController {
 	@FXML
 	private void handleDownButton() {
 		System.out.println("down");
-		if (ot_d.isRunning()) {
-			ot_d.cancel();
-			this.mainApp.setDoor((Door) ot_d.getValue());
-		}
-		if (rt_g.isRunning()) {
-			rt_g.cancel();
-			this.mainApp.setGear((Gear) rt_g.getValue());
-		}
-		if (rt_d.isRunning()) {
-			rt_d.cancel();
-			this.mainApp.setDoor((Door) rt_d.getValue());
-		}
+		
+		// unlock in down position 0,8s
+		// 1,6s mouvement
+		// 0,4s de fin
+		if (!this.mainApp.getGear().isStatus()) {
+			
+			ot_d.setOnSucceeded((WorkerStateEvent event) -> {
+				System.out.println("porte ouverte");
+				this.mainApp.getDoor().setMoving(false);
+				this.mainApp.getDoor().setStatus(true);
+				
+				frontDoor.setImage(door_opened);
+				frontGear.setImage(gear_moving);
+				
+				rt_g.start();
+				this.mainApp.getGear().setMoving(true);
+			});
+			
+			ot_g.setOnSucceeded((WorkerStateEvent event) -> {
+				this.mainApp.getGear().setStatus(true);
+				this.mainApp.getGear().setMoving(false);
 
-		ot_d.setOnSucceeded((WorkerStateEvent event) -> {
-			System.out.println("porte ouverte");
-			frontDoor.setImage(door_opened);
-			frontGear.setImage(gear_moving);
-			ot_g.restart();
-		});
-		ot_g.setOnSucceeded((WorkerStateEvent event) -> {
-			frontGear.setImage(gear_opened);
+				frontGear.setImage(gear_opened);
+				frontDoor.setImage(door_moving);
+				
+				rt_d.start();
+				mainApp.getDoor().setMoving(true);
+			});
+
+			rt_d.setOnSucceeded((WorkerStateEvent event) -> {
+				this.mainApp.getDoor().setStatus(false);
+				frontDoor.setImage(door_closed);
+			});
+			
 			frontDoor.setImage(door_moving);
-			System.out.println("roue sortie");
-			rt_d.restart();
-		});
-		rt_d.setOnSucceeded((WorkerStateEvent event) -> {
-			System.out.println("end door : "
-					+ this.mainApp.getDoor().isStatus()
-					+ this.mainApp.getGear().isStatus());
-			frontDoor.setImage(door_closed);
-			t_gear.setText(Boolean.toString(this.mainApp.getGear().isStatus()));
-			t_door.setText(Boolean.toString(this.mainApp.getDoor().isStatus()));
-
-		});
-		frontDoor.setImage(door_moving);
-		ot_d.restart();
-
+			ot_d.start();
+			mainApp.getDoor().setMoving(true);
+		}
 	}
 
 	public void setMainApp(Main mainApp, Scene scene) {

@@ -10,6 +10,10 @@ public abstract class Element {
 	protected int MAX_RETRACTING_TIME;
 	protected int USUAL_OUTGOING_TIME;
 	protected int MAX_OUTGOING_TIME;
+	
+	public Element () {
+		this.moving = false;
+	}
 
 	public boolean isStatus() {
 		return status;

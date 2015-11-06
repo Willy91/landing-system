@@ -110,8 +110,12 @@ public class CentralController {
 		}
 		else if(this.mainApp.getDoor().isMoving() && this.mainApp.getGear().isStatus()){
 			//cas porte se rentrant et gear sortie
-			rt_d.cancel();
-			ot_d.start();
+			System.out.println("dedans");
+			ot_d.cancel();
+			ot_d.setOnCancelled((WorkerStateEvent event) -> {
+				rt_d.restart();
+
+			});
 		}
 		else if (!this.mainApp.getDoor().isMoving() && !this.mainApp.getGear().isStatus()) {
 			//cas initial

@@ -104,7 +104,7 @@ public class CentralController {
 		//rt.flag = false;
 		if(ot_d.isRunning()) ot_d.cancel();
 		if(rt_g.isRunning()) rt_g.cancel();
-		if(ot_g.isRunning()) ot_g.cancel();
+		//if(ot_g.isRunning()) ot_g.cancel();
 		
 		if(this.mainApp.getGear().isStatus()){
 			this.ot_d=new OutgoingThread(this.mainApp.getDoor());
@@ -112,19 +112,24 @@ public class CentralController {
 			this.rt_d=new RetractingThread(this.mainApp.getDoor());
 			ot_d.setOnSucceeded((WorkerStateEvent event)-> {
 				System.out.println("porte ouverte");
+				frontDoor.setImage(door_opened);
+				frontGear.setImage(gear_moving);
 				ot_g.start();
 			});
 			ot_g.setOnSucceeded((WorkerStateEvent event)-> {
+				frontGear.setImage(gear_opened);
+				frontDoor.setImage(door_moving);
 				System.out.println("roue sortie");
 				rt_d.start();
 			});
 			rt_d.setOnSucceeded((WorkerStateEvent event)-> {
 				System.out.println("end door : "+this.mainApp.getDoor().isStatus()+this.mainApp.getGear().isStatus());
-		
+				frontDoor.setImage(door_closed);
 				t_gear.setText(Boolean.toString(this.mainApp.getGear().isStatus()));
 				t_door.setText(Boolean.toString(this.mainApp.getDoor().isStatus()));
 				
 			});
+			frontDoor.setImage(door_moving);
 			ot_d.start();
 		}
 	}

@@ -111,12 +111,21 @@ public class CentralController {
 	@FXML
 	private void handleDownButton() {
 		System.out.println("down");
-		if(ot_d.isRunning()) ot_d.cancel();
-		if(rt_g.isRunning()) rt_g.cancel();
-		if(ot_g.isRunning()) ot_g.cancel();
+		if(ot_d.isRunning()){
+			ot_d.cancel();
+			this.mainApp.setDoor((Door)ot_d.getValue());
+		}
+		if(rt_g.isRunning()){ 
+			rt_g.cancel();
+			this.mainApp.setGear((Gear)rt_g.getValue());
+		}
+		if(rt_d.isRunning()) {
+			rt_d.cancel();
+			this.mainApp.setDoor((Door)rt_d.getValue());
+		}
 		
 		
-		if(this.mainApp.getGear().isStatus()){
+
 			ot_d = new OutgoingThread(this.mainApp.getDoor());
 			ot_g = new OutgoingThread(this.mainApp.getGear());
 			rt_d = new RetractingThread(this.mainApp.getDoor());
@@ -143,7 +152,7 @@ public class CentralController {
 			});
 			frontDoor.setImage(door_moving);
 			ot_d.restart();
-		}
+		
 	}
 	
 	public void setMainApp(Main mainApp,Scene scene) {

@@ -23,6 +23,7 @@ public abstract class CentralThread extends Service<Integer> {
 			@Override
 			protected Integer call() throws Exception {
 				timing = 0;
+				done = false;
 				while (timing < MAX_TIME && !done && flag) {
 					System.out.println(timing);
 					try {

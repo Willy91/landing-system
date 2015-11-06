@@ -30,12 +30,13 @@ public abstract class CentralThread extends Service<Element> {
 						Thread.sleep(10);
 					} catch (InterruptedException e) {
 						if (isCancelled()) {
+							updateValue(el);
 							el.setActualTime(timing);
 							return el;
 						}
 						e.printStackTrace();
 					}
-
+					
 					timing++;
 
 					if (timing == USUAL_TIME) {

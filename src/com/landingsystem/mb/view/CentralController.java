@@ -77,6 +77,10 @@ public class CentralController {
 		//1,6s mouvement
 		//0,4s de fin
 		if(!this.mainApp.getGear().isStatus()) {
+			ot_d = new OutgoingThread(this.mainApp.getDoor());
+			rt_g = new RetractingThread(this.mainApp.getGear());
+			rt_d = new RetractingThread(this.mainApp.getDoor());
+
 			
 			
 			ot_d.setOnSucceeded((WorkerStateEvent event)-> {
@@ -113,6 +117,10 @@ public class CentralController {
 		
 		
 		if(this.mainApp.getGear().isStatus()){
+			ot_d = new OutgoingThread(this.mainApp.getDoor());
+			ot_g = new OutgoingThread(this.mainApp.getGear());
+			rt_d = new RetractingThread(this.mainApp.getDoor());
+
 			
 			ot_d.setOnSucceeded((WorkerStateEvent event)-> {
 				System.out.println("porte ouverte");

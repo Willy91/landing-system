@@ -21,7 +21,6 @@
                   <Text fx:id="front_door_status" text="status" />
                </children>
             </VBox>
-            <ImageView fitHeight="150.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0">
@@ -30,15 +29,30 @@
                <image>
                   <Image url="@../../../../../res/door2_closed.jpg" />
                </image></ImageView>
-            <ImageView fx:id="frontDoor" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fx:id="rightDoor" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="frontDoor" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../res/door2_closed.jpg" />
+               </image></ImageView>
+            <ImageView fx:id="rightDoor" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../res/door2_closed.jpg" />
+               </image></ImageView>
          </children>
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
-            <ImageView fx:id="leftGear" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fx:id="frontGear" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fx:id="rightGear" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="leftGear" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../res/gear2_extracted.jpg" />
+               </image></ImageView>
+            <ImageView fx:id="frontGear" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../res/gear2_extracted.jpg" />
+               </image></ImageView>
+            <ImageView fx:id="rightGear" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../res/gear2_extracted.jpg" />
+               </image></ImageView>
          </children>
       </HBox>
    </children>

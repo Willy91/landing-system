@@ -5,6 +5,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.text.Text?>
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.landingsystem.mb.view.CentralController">
    <children>
@@ -12,8 +13,11 @@
          <children>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
+               	<Text fx:id="text" text="Front command"/>
                   <Button fx:id="upButton" mnemonicParsing="false" onAction="#handleUpButton" prefHeight="25.0" prefWidth="60.0" text="UP" />
                   <Button fx:id="downButton" alignment="BOTTOM_LEFT" mnemonicParsing="false" onAction="#handleDownButton" text="DOWN" />
+                  <Text fx:id="front_gear_status" text="status"/>
+                  <Text fx:id="front_door_status" text="status"/>
                </children>
             </VBox>
             <ImageView fitHeight="150.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="true" />

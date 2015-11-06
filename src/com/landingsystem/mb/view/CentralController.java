@@ -7,7 +7,9 @@ import com.landingsystem.mb.model.RetractingThread;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.text.Text;
 
 public class CentralController {
 
@@ -18,7 +20,7 @@ public class CentralController {
 	private Button downButton;
 	
 	private Main mainApp;
-
+	private Scene scene; 
 	private boolean upPressed;
 	private boolean downPressed;
 	private boolean done;
@@ -60,24 +62,37 @@ public class CentralController {
 	@FXML
 	private void handleDownButton() {
 		System.out.println("down");
-		ot.flag = false;
-		rt.flag = false;
+		//ot.flag = false;
+		//rt.flag = false;
 		if(this.mainApp.getGear().isStatus()){
 			this.ot=new OutgoingThread(this.mainApp.getDoor());
 			this.otg=new OutgoingThread(this.mainApp.getGear());
 			this.rt=new RetractingThread(this.mainApp.getDoor());
 			ot.setOnSucceeded((WorkerStateEvent event)-> {
+				System.out.println("porte ouverte");
 				otg.start();
 			});
 			otg.setOnSucceeded((WorkerStateEvent event)-> {
+				System.out.println("roue sortie");
+
 				rt.start();
+			});
+			rt.setOnSucceeded((WorkerStateEvent event)-> {
+				System.out.println("end door : "+this.mainApp.getDoor().isStatus()+this.mainApp.getGear().isStatus());
+				Text t_gear = (Text)this.scene.lookup("#front_gear_status");
+				Text t_door =(Text)this.scene.lookup("#front_gear_status");
+				
+				t_gear.setText(Boolean.toString(this.mainApp.getGear().isStatus()));
+				t_door.setText(Boolean.toString(this.mainApp.getDoor().isStatus()));
+				
 			});
 			ot.start();
 		}
 	}
 	
-	public void setMainApp(Main mainApp) {
+	public void setMainApp(Main mainApp,Scene scene) {
 		this.mainApp = mainApp;
+		this.scene = scene;
 		
 	}
 }

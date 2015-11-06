@@ -104,9 +104,29 @@ public class CentralController {
 		// unlock in down position 0,8s
 		// 1,6s mouvement
 		// 0,4s de fin
-		if (!this.mainApp.getGear().isStatus()) {
-			
-			
+		
+		//cas porte moving && false
+				// cas porte true et gear moving et true
+				
+				// cas porte moving et gear false
+				//cas 
+		if(this.mainApp.getDoor().isMoving() && !this.mainApp.getGear().isStatus()){
+			//cas porte moving et gear à l'intérieur
+			ot_d.cancel();
+			rt_d.start();
+		}
+		else if(this.mainApp.getDoor().isStatus() && this.mainApp.getGear().isMoving()){
+			//cas porte sortie et gear sortante
+			ot_g.cancel();
+			rt_g.start();
+		}
+		else if(this.mainApp.getDoor().isMoving() && this.mainApp.getGear().isStatus()){
+			//cas porte se rentrant et gear sortie
+			rt_d.cancel();
+			ot_d.start();
+		}
+		else if (!this.mainApp.getDoor().isMoving() && !this.mainApp.getGear().isStatus()) {
+			//cas initial
 			ot_g.setOnSucceeded((WorkerStateEvent event) -> {
 				ot_g.reset();
 				this.mainApp.getGear().setStatus(true);

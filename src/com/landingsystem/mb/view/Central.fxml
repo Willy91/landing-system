@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import java.lang.*?>
@@ -13,11 +14,11 @@
          <children>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
-               	<Text fx:id="text" text="Front command"/>
+               	<Text fx:id="text" text="Front command" />
                   <Button fx:id="upButton" mnemonicParsing="false" onAction="#handleUpButton" prefHeight="25.0" prefWidth="60.0" text="UP" />
                   <Button fx:id="downButton" alignment="BOTTOM_LEFT" mnemonicParsing="false" onAction="#handleDownButton" text="DOWN" />
-                  <Text fx:id="front_gear_status" text="status"/>
-                  <Text fx:id="front_door_status" text="status"/>
+                  <Text fx:id="front_gear_status" text="status" />
+                  <Text fx:id="front_door_status" text="status" />
                </children>
             </VBox>
             <ImageView fitHeight="150.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="true" />
@@ -25,21 +26,19 @@
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
-            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="leftDoor" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../res/door2_closed.jpg" />
+               </image></ImageView>
+            <ImageView fx:id="frontDoor" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="rightDoor" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
-            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-         </children>
-      </HBox>
-      <HBox prefHeight="100.0" prefWidth="200.0">
-         <children>
-            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="leftGear" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="frontGear" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="rightGear" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </HBox>
    </children>

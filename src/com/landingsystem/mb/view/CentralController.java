@@ -24,6 +24,7 @@ public class CentralController {
 	private boolean done;
 	private RetractingThread rt;
 	private OutgoingThread ot;
+	private OutgoingThread otg;
 	private int timing;
 	
 	public CentralController(){
@@ -58,10 +59,21 @@ public class CentralController {
 	
 	@FXML
 	private void handleDownButton() {
-		
 		System.out.println("down");
 		ot.flag = false;
 		rt.flag = false;
+		if(this.mainApp.getGear().isStatus()){
+			this.ot=new OutgoingThread(this.mainApp.getDoor());
+			this.otg=new OutgoingThread(this.mainApp.getGear());
+			this.rt=new RetractingThread(this.mainApp.getDoor());
+			ot.setOnSucceeded((WorkerStateEvent event)-> {
+				otg.start();
+			});
+			otg.setOnSucceeded((WorkerStateEvent event)-> {
+				rt.start();
+			});
+			ot.start();
+		}
 	}
 	
 	public void setMainApp(Main mainApp) {

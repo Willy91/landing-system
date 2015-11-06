@@ -2,6 +2,7 @@ package com.landingsystem.mb.view;
 
 import com.landingsystem.mb.controller.Main;
 import com.landingsystem.mb.model.Door;
+import com.landingsystem.mb.model.Gear;
 import com.landingsystem.mb.model.OutgoingThread;
 import com.landingsystem.mb.model.RetractingThread;
 
@@ -23,14 +24,20 @@ public class CentralController {
 	private Main mainApp;
 	private Scene scene; 
 	private boolean done;
-	private RetractingThread rt;
-	private OutgoingThread ot;
-	private OutgoingThread otg;
+	private RetractingThread rt_g;
+	private OutgoingThread ot_d;
+	private OutgoingThread ot_g;
+	private RetractingThread rt_d;
 	private int timing;
+	
+	private Text t_door;
+	private Text t_gear;
 	
 	public CentralController(){
 		this.timing=0; // temps de retractation des roues 
 		this.done=false;
+		this.t_gear = (Text)this.scene.lookup("#front_gear_status");
+		this.t_door =(Text)this.scene.lookup("#front_gear_status");
 	}
 	
 	@FXML
@@ -40,15 +47,22 @@ public class CentralController {
 		//1,6s mouvement
 		//0,4s de fin
 		if(!this.mainApp.getGear().isStatus()) {
-			ot = new OutgoingThread(this.mainApp.getDoor());
-			rt = new RetractingThread(this.mainApp.getGear());
-			
-			ot.start();
-			ot.setOnSucceeded((WorkerStateEvent event)-> {
+			ot_d = new OutgoingThread(this.mainApp.getDoor());
+			rt_g = new RetractingThread(this.mainApp.getGear());
+			rt_d = new RetractingThread(this.mainApp.getDoor());
+			ot_d.setOnSucceeded((WorkerStateEvent event)-> {
 				System.out.println("porte ouverte");
-				this.mainApp.setDoor((Door)ot.getValue());
-				rt.start();
-			});
+				this.mainApp.setDoor((Door)ot_d.getValue());
+				rt_g.start();
+			});	
+			rt_g.setOnSucceeded((WorkerStateEvent event)-> {
+				System.out.println("porte ouverte");
+				this.mainApp.setGear((Gear)rt_g.getValue());
+				rt_d.start();
+			});	
+			
+			ot_d.start();
+
 
 		}
 	}
@@ -59,28 +73,25 @@ public class CentralController {
 		//ot.flag = false;
 		//rt.flag = false;
 		if(this.mainApp.getGear().isStatus()){
-			this.ot=new OutgoingThread(this.mainApp.getDoor());
-			this.otg=new OutgoingThread(this.mainApp.getGear());
-			this.rt=new RetractingThread(this.mainApp.getDoor());
-			ot.setOnSucceeded((WorkerStateEvent event)-> {
+			this.ot_d=new OutgoingThread(this.mainApp.getDoor());
+			this.ot_g=new OutgoingThread(this.mainApp.getGear());
+			this.rt_d=new RetractingThread(this.mainApp.getDoor());
+			ot_d.setOnSucceeded((WorkerStateEvent event)-> {
 				System.out.println("porte ouverte");
-				otg.start();
+				ot_g.start();
 			});
-			otg.setOnSucceeded((WorkerStateEvent event)-> {
+			ot_g.setOnSucceeded((WorkerStateEvent event)-> {
 				System.out.println("roue sortie");
-
-				rt.start();
+				rt_d.start();
 			});
-			rt.setOnSucceeded((WorkerStateEvent event)-> {
+			rt_d.setOnSucceeded((WorkerStateEvent event)-> {
 				System.out.println("end door : "+this.mainApp.getDoor().isStatus()+this.mainApp.getGear().isStatus());
-				Text t_gear = (Text)this.scene.lookup("#front_gear_status");
-				Text t_door =(Text)this.scene.lookup("#front_gear_status");
-				
+		
 				t_gear.setText(Boolean.toString(this.mainApp.getGear().isStatus()));
 				t_door.setText(Boolean.toString(this.mainApp.getDoor().isStatus()));
 				
 			});
-			ot.start();
+			ot_d.start();
 		}
 	}
 	

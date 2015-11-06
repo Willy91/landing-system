@@ -82,6 +82,7 @@ public class CentralController {
 				System.out.println("porte ouverte");
 				this.mainApp.getDoor().setMoving(false);
 				this.mainApp.getDoor().setStatus(true);
+				ot_d.reset();
 				
 				frontDoor.setImage(door_opened);
 				frontGear.setImage(gear_moving);
@@ -92,6 +93,7 @@ public class CentralController {
 			rt_g.setOnSucceeded((WorkerStateEvent event) -> {
 				this.mainApp.getGear().setStatus(false);
 				this.mainApp.getGear().setMoving(false);
+				rt_g.reset();
 
 				frontGear.setImage(gear_close);
 				frontDoor.setImage(door_moving);
@@ -102,6 +104,7 @@ public class CentralController {
 
 			rt_d.setOnSucceeded((WorkerStateEvent event) -> {
 				this.mainApp.getDoor().setStatus(false);
+				rt_d.reset();
 				frontDoor.setImage(door_closed);
 			});
 

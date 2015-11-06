@@ -9,6 +9,7 @@ import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
@@ -44,10 +45,23 @@ public class CentralController {
 	
 	private Text t_door;
 	private Text t_gear;
+	private Image door_closed;
+	private Image door_opened;
+	private Image door_moving;
+	private Image gear_close;
+	private Image gear_opened;
+	private Image gear_moving;
 	
 	public CentralController(){
 		this.timing=0; // temps de retractation des roues 
 		this.done=false;
+		door_closed=new Image("/res/door2_closed.jpg");
+		/*door_opened=new Image("@../../../../../res/door2_opened.jpg");
+		door_moving=new Image("@../../../../../res/door2_moving.jpg");
+		
+		gear_close=new Image("@../../../../../res/gear2_retracted.jpg");
+		gear_moving=new Image("@../../../../../res/gear2_moving.jpg");
+		gear_opened=new Image("@../../../../../res/gear2_extracted.jpg");*/
 	}
 	
 	@FXML
@@ -63,6 +77,7 @@ public class CentralController {
 			ot_d.setOnSucceeded((WorkerStateEvent event)-> {
 				System.out.println("porte ouverte");
 				this.mainApp.setDoor((Door)ot_d.getValue());
+				this.frontDoor.setImage(this.door_opened);
 				rt_g.start();
 			});	
 			rt_g.setOnSucceeded((WorkerStateEvent event)-> {

@@ -108,18 +108,23 @@ public class CentralController {
 	private void handleDownButton() {
 		System.out.println("down");
 		
-		
 		if (rt_d.isRunning()) {
+			rt_d.setOnSucceeded((WorkerStateEvent event) -> {
+				this.mainApp.setDoor((Door) rt_d.getValue());
+			});
 			rt_d.flag=true;
-			this.mainApp.setDoor((Door) rt_d.getValue());
 		}
 		if (rt_g.isRunning()) {
+			rt_g.setOnSucceeded((WorkerStateEvent event) -> {
+				this.mainApp.setGear((Gear) rt_g.getValue());
+			});
 			rt_g.flag=true;
-			this.mainApp.setGear((Gear) rt_g.getValue());
 		}
 		if (ot_d.isRunning()) {
+			ot_d.setOnSucceeded((WorkerStateEvent event) -> {
+				this.mainApp.setDoor((Door) ot_d.getValue());
+			});
 			ot_d.flag=true;
-			this.mainApp.setDoor((Door) ot_d.getValue());
 		}
 
 		ot_d = new OutgoingThread(this.mainApp.getDoor());

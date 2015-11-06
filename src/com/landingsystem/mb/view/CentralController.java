@@ -79,7 +79,7 @@ public class CentralController {
 			
 			
 
-			ot_d.start();
+			ot_d.restart();
 			mainApp.getDoor().setMoving(true);
 
 		}
@@ -124,7 +124,7 @@ public class CentralController {
 		else if (!this.mainApp.getDoor().isMoving() && !this.mainApp.getGear().isStatus()) {
 			//cas initial
 			frontDoor.setImage(door_moving);
-			ot_d.start();
+			ot_d.restart();
 			mainApp.getDoor().setMoving(true);
 		}
 
@@ -156,10 +156,10 @@ public class CentralController {
 			frontGear.setImage(gear_moving);
 			
 			if(!this.mainApp.getGear().isStatus()) {
-				ot_g.start();
+				ot_g.restart();
 			}
 			else {
-				rt_g.start();
+				rt_g.restart();
 			}
 			this.mainApp.getGear().setMoving(true);
 		});
@@ -172,7 +172,7 @@ public class CentralController {
 			frontGear.setImage(gear_close);
 			frontDoor.setImage(door_moving);
 			
-			rt_d.start();
+			rt_d.restart();
 			mainApp.getDoor().setMoving(true);
 		});
 		
@@ -185,7 +185,7 @@ public class CentralController {
 			frontGear.setImage(gear_opened);
 			frontDoor.setImage(door_moving);
 			
-			rt_d.start();
+			rt_d.restart();
 			mainApp.getDoor().setMoving(true);
 		});
 	}

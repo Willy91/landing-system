@@ -78,18 +78,7 @@ public class CentralController {
 		if (this.mainApp.getGear().isStatus()) {
 			
 
-			ot_d.setOnSucceeded((WorkerStateEvent event) -> {
-				System.out.println("porte ouverte");
-				this.mainApp.getDoor().setMoving(false);
-				this.mainApp.getDoor().setStatus(true);
-				ot_d.reset();
-				
-				frontDoor.setImage(door_opened);
-				frontGear.setImage(gear_moving);
-				
-				rt_g.start();
-				this.mainApp.getGear().setMoving(true);
-			});
+			
 			rt_g.setOnSucceeded((WorkerStateEvent event) -> {
 				this.mainApp.getGear().setStatus(false);
 				this.mainApp.getGear().setMoving(false);
@@ -100,12 +89,6 @@ public class CentralController {
 				
 				rt_d.start();
 				mainApp.getDoor().setMoving(true);
-			});
-
-			rt_d.setOnSucceeded((WorkerStateEvent event) -> {
-				this.mainApp.getDoor().setStatus(false);
-				rt_d.reset();
-				frontDoor.setImage(door_closed);
 			});
 
 			ot_d.start();
@@ -123,18 +106,6 @@ public class CentralController {
 		// 0,4s de fin
 		if (!this.mainApp.getGear().isStatus()) {
 			
-			ot_d.setOnSucceeded((WorkerStateEvent event) -> {
-				System.out.println("porte ouverte");
-				ot_d.reset();
-				this.mainApp.getDoor().setMoving(false);
-				this.mainApp.getDoor().setStatus(true);
-				
-				frontDoor.setImage(door_opened);
-				frontGear.setImage(gear_moving);
-				
-				ot_g.start();
-				this.mainApp.getGear().setMoving(true);
-			});
 			
 			ot_g.setOnSucceeded((WorkerStateEvent event) -> {
 				ot_g.reset();
@@ -149,11 +120,7 @@ public class CentralController {
 				mainApp.getDoor().setMoving(true);
 			});
 
-			rt_d.setOnSucceeded((WorkerStateEvent event) -> {
-				rt_d.reset();
-				this.mainApp.getDoor().setStatus(false);
-				frontDoor.setImage(door_closed);
-			});
+			
 			
 			frontDoor.setImage(door_moving);
 			ot_d.start();
@@ -170,6 +137,29 @@ public class CentralController {
 		ot_g = new OutgoingThread(this.mainApp.getGear());
 		rt_g = new RetractingThread(this.mainApp.getGear());
 		rt_d = new RetractingThread(this.mainApp.getDoor());
-
+		
+		rt_d.setOnSucceeded((WorkerStateEvent event) -> {
+			rt_d.reset();
+			this.mainApp.getDoor().setStatus(false);
+			frontDoor.setImage(door_closed);
+		});
+		
+		ot_d.setOnSucceeded((WorkerStateEvent event) -> {
+			System.out.println("porte ouverte");
+			this.mainApp.getDoor().setMoving(false);
+			this.mainApp.getDoor().setStatus(true);
+			ot_d.reset();
+			
+			frontDoor.setImage(door_opened);
+			frontGear.setImage(gear_moving);
+			
+			if(!this.mainApp.getGear().isStatus()) {
+				ot_g.start();
+			}
+			else {
+				rt_g.start();
+			}
+			this.mainApp.getGear().setMoving(true);
+		});
 	}
 }

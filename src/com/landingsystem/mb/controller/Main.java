@@ -14,12 +14,12 @@ import javafx.fxml.FXMLLoader;
 
 
 public class Main extends Application {
-	private Gear gear;
-	private Door door;
+	private Gear[] gear;
+	private Door[] door;
 	@Override
 	public void start(Stage primaryStage) {
-		this.gear=new Gear();
-		this.door= new Door();
+		this.gear=new Gear[]{new Gear(),new Gear(),new Gear()};
+		this.door=new Door[]{new Door(),new Door(),new Door()};
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(Main.class.getResource("../view/Central.fxml"));

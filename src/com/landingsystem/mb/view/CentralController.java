@@ -73,19 +73,73 @@ public class CentralController {
 	@FXML
 	private void handleUpButton() {
 		System.out.println("up");
-		boolean ok = true;
-		// unlock in down position 0,8s
-		// 1,6s mouvement
-		// 0,4s de fin
+		boolean door_opening_gear_inside = false; // ETAPE UNE DE DOWN
+		boolean door_opened_gear_moving = false; // ETAPE 2 DE DOWN
+		boolean door_closing_gear_outside = false; // ETAPE 3 DE DOWN
+		boolean door_closed_gear_outside = false; // ETAPE 4 DE DOWN, ETAPE INITIALE
+												// DE UP
+		
 		for (int i = 0; i < 3; i++) {
-			imageViewDoors[i].setImage(door_moving);
-
-			if (!this.mainApp.getGears()[i].isStatus()) {
-				ok = false;
+			// SI PORTE EN COURS D OUVERTURE ET ROUE ENCORE INTERIEUR
+			if (this.mainApp.getDoors()[i].isMoving() && !this.mainApp.getGears()[i].isStatus()) {
+				door_opening_gear_inside = true;
+			}
+			
+			// SI PORTE OUVERTE ET ROUE ENTRAIN DE SORTIR
+			if (this.mainApp.getDoors()[i].isStatus() && this.mainApp.getGears()[i].isMoving()) {
+				door_opened_gear_moving = true;
+			}
+			
+			// SI PORTE ENTRAIN DE SE FERMER ET LA ROUE A L'EXTERIEUR
+			if (this.mainApp.getDoors()[i].isMoving() && this.mainApp.getGears()[i].isStatus()) {
+				door_closing_gear_outside = true;
+			}
+			
+			// SI PORTE FERMEE ET LA ROUE EST TRKL DEDANS
+			if (!this.mainApp.getDoors()[i].isStatus() && this.mainApp.getGears()[i].isStatus()) {
+				door_closed_gear_outside = true;
 			}
 		}
-		if (ok) {
+		
+		if (door_opening_gear_inside) {
+			System.out.println("dans 1");
 			for (int i = 0; i < 3; i++) {
+				final int tmp = i;
+				ot_d[i].setOnCancelled((WorkerStateEvent event) -> {
+					rt_d[tmp].restart();
+				});
+				ot_d[i].cancel();
+			}
+		}
+
+		else if (door_opened_gear_moving) {
+			System.out.println("dans 2");
+			for (int i = 0; i < 3; i++) {
+				final int tmp = i;
+				ot_g[i].setOnCancelled((WorkerStateEvent event) -> {
+					rt_g[tmp].restart();
+				});
+				ot_g[i].cancel();
+			}
+		}
+
+		else if (door_closing_gear_outside) {
+			System.out.println("dans 3");
+
+			for (int i = 0; i < 3; i++) {
+				final int tmp = i;
+				rt_d[i].setOnCancelled((WorkerStateEvent event) -> {
+					ot_d[tmp].restart();
+				});
+				rt_d[i].cancel();
+			}
+		}
+
+		else if (door_closed_gear_outside) {
+			System.out.println("dans 4");
+
+			for (int i = 0; i < 3; i++) {
+				imageViewDoors[i].setImage(door_moving);
 				ot_d[i].restart();
 				mainApp.getDoors()[i].setMoving(true);
 			}

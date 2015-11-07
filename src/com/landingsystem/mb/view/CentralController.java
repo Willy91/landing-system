@@ -133,10 +133,10 @@ public class CentralController {
 			System.out.println("dans 1");
 			for (int i = 0; i < 3; i++) {
 				final int tmp = i;
-				rt_d[i].setOnCancelled((WorkerStateEvent event) -> {
-					ot_d[tmp].restart();
+				ot_d[i].setOnCancelled((WorkerStateEvent event) -> {
+					rt_d[tmp].restart();
 				});
-				rt_d[i].cancel();
+				ot_d[i].cancel();
 			}
 		}
 

@@ -7,14 +7,12 @@ import com.landingsystem.mb.view.CentralController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.fxml.FXMLLoader;
 
 public class Main extends Application {
-	private Gear[] gear;
-	private Door[] door;
+	private Gear[] gears;
+	private Door[] doors;
 	private static int FRONT_GEAR_RETRACTING = 280;
 	private static int FRONT_GEAR_OUTGOING = 240;
 	private static int SIDE_GEAR_RETRACTING = 320;
@@ -26,11 +24,11 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
-		this.gear = new Gear[] {
+		this.gears = new Gear[] {
 				new Gear(FRONT_GEAR_OUTGOING, FRONT_GEAR_RETRACTING),
 				new Gear(SIDE_GEAR_OUTGOING, SIDE_GEAR_RETRACTING),
 				new Gear(SIDE_GEAR_OUTGOING, SIDE_GEAR_RETRACTING) };
-		this.door = new Door[] { 
+		this.doors = new Door[] { 
 				new Door(FRONT_DOOR_OUTGOING,FRONT_DOOR_RETRACTING), 
 				new Door(SIDE_DOOR_OUTGOING,SIDE_DOOR_RETRACTING), 
 				new Door(SIDE_DOOR_OUTGOING,SIDE_DOOR_RETRACTING) };
@@ -56,18 +54,18 @@ public class Main extends Application {
 	}
 
 	public Gear[] getGears() {
-		return gear;
+		return gears;
 	}
 
-	public void setGear(Gear gear) {
-		this.gear = gear;
+	public void setGear(Gear gear, int index) {
+		this.gears[index] = gear;
 	}
 
 	public Door[] getDoors() {
-		return door;
+		return doors;
 	}
 
-	public void setDoor(Door door) {
-		this.door = door;
+	public void setDoor(Door door, int index) {
+		this.doors[index] = door;
 	}
 }

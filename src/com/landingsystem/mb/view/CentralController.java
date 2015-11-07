@@ -95,31 +95,31 @@ public class CentralController {
 	@FXML
 	private void handleDownButton() {
 		System.out.println("down");
-		boolean door_opening_gear_extracted = true; // ETAPE UNE DE UP
-		boolean door_opened_gear_moving = true; // ETAPE 2 DE UP
-		boolean door_closing_gear_inside = true; // ETAPE 3 DE UP
-		boolean door_closed_gear_inside = true; // ETAPE 4 DE UP, ETAPE INITIALE
+		boolean door_opening_gear_extracted = false; // ETAPE UNE DE UP
+		boolean door_opened_gear_moving = false; // ETAPE 2 DE UP
+		boolean door_closing_gear_inside = false; // ETAPE 3 DE UP
+		boolean door_closed_gear_inside = false; // ETAPE 4 DE UP, ETAPE INITIALE
 												// DE DOWN
 
 		for (int i = 0; i < 3; i++) {
 			// SI PORTE EN COURS D OUVERTURE ET ROUE ENCORE EXTERIEUR
-			if (!this.mainApp.getDoors()[i].isMoving() && this.mainApp.getGears()[i].isStatus()) {
-				door_opening_gear_extracted = false;
+			if (this.mainApp.getDoors()[i].isMoving() && this.mainApp.getGears()[i].isStatus()) {
+				door_opening_gear_extracted = true;
 			}
 			
 			// SI PORTE OUVERTE ET ROUE ENTRAIN DE RENTRER
-			if (!this.mainApp.getDoors()[i].isStatus() && !this.mainApp.getGears()[i].isMoving()) {
-				door_opened_gear_moving = false;
+			if (this.mainApp.getDoors()[i].isStatus() && this.mainApp.getGears()[i].isMoving()) {
+				door_opened_gear_moving = true;
 			}
 			
 			// SI PORTE ENTRAIN DE SE FERMER ET LA ROUE A L'INTERIEUR
-			if (!this.mainApp.getDoors()[i].isMoving() && this.mainApp.getGears()[i].isStatus()) {
-				door_closing_gear_inside = false;
+			if (this.mainApp.getDoors()[i].isMoving() && !this.mainApp.getGears()[i].isStatus()) {
+				door_closing_gear_inside = true;
 			}
 			
 			// SI PORTE FERMEE ET LA ROUE EST TRKL DEDANS
-			if (!this.mainApp.getDoors()[i].isStatus() && this.mainApp.getGears()[i].isStatus()) {
-				door_closed_gear_inside = false;
+			if (!this.mainApp.getDoors()[i].isStatus() && !this.mainApp.getGears()[i].isStatus()) {
+				door_closed_gear_inside = true;
 			}
 		}
 		
@@ -150,10 +150,10 @@ public class CentralController {
 
 			for (int i = 0; i < 3; i++) {
 				final int tmp = i;
-				ot_d[i].setOnCancelled((WorkerStateEvent event) -> {
-					rt_d[tmp].restart();
+				rt_d[i].setOnCancelled((WorkerStateEvent event) -> {
+					ot_d[tmp].restart();
 				});
-				ot_d[i].cancel();
+				rt_d[i].cancel();
 			}
 		}
 
@@ -202,6 +202,8 @@ public class CentralController {
 			rt_d[i].setOnSucceeded((WorkerStateEvent event) -> {
 				rt_d[tmp].reset();
 				this.mainApp.getDoors()[tmp].setStatus(false);
+				this.mainApp.getDoors()[tmp].setMoving(false);
+
 				imageViewDoors[tmp].setImage(door_closed);
 			});
 

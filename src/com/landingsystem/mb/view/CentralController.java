@@ -79,6 +79,11 @@ public class CentralController {
 		// unlock in down position 0,8s
 		// 1,6s mouvement
 		// 0,4s de fin
+		for(int i=0;i<3;i++) {
+			if(this.mainApp.getGears()[i].isStatus()) {
+				
+			}
+		}
 		if (this.mainApp.getGear().isStatus()) {
 			ot_d.restart();
 			mainApp.getDoor().setMoving(true);

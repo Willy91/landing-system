@@ -96,25 +96,19 @@ public class CentralController {
 	@FXML
 	private void handleDownButton() {
 		System.out.println("down");
-		boolean ok = true;
+		boolean door_opening_gear_extracted = true; //ETAPE UNE DE UP
+		boolean door_opened_gear_moving = true; //ETAPE 2 DE UP
+		boolean door_closing_gear_inside = true; //ETAPE 3 DE UP
+		boolean door_closed_gear_inside = true; //ETAPE 4 DE UP, ETAPE INITIALE DE DOWN
 		
-		// unlock in down position 0,8s
-		// 1,6s mouvement
-		// 0,4s de fin
-		
-		//cas porte moving && false
-				// cas porte true et gear moving et true
-				
-				// cas porte moving et gear false
-				//cas
 		
 		//SI PORTE EN COURS D OUVERTURE ET ROUE ENCORE EXTERIEUR
 		for(int i=0;i<3;i++) {
 			if(!this.mainApp.getDoors()[i].isMoving() && this.mainApp.getGears()[i].isStatus()){
-				ok = false;
+				door_opening_gear_extracted = false;
 			}	
 		}
-		if(ok) {
+		if(door_opening_gear_extracted) {
 			for(int i=0;i<3;i++) {
 				rt_d[i].setOnCancelled((WorkerStateEvent event) -> {
 					ot_d[i].restart();
@@ -123,27 +117,48 @@ public class CentralController {
 			}
 		}
 		
-		else if(this.mainApp.getDoor().isStatus() && this.mainApp.getGear().isMoving()){
-			//cas porte sortie et gear sortante
-			rt_g.setOnCancelled((WorkerStateEvent event) -> {
-				ot_g.restart();
-			});
-			rt_g.cancel();
+		//SI PORTE OUVERTE ET ROUE ENTRAIN DE RENTRER CHEZ ELLE OKLM
+		for(int i=0;i<3;i++) {
+			if(!this.mainApp.getDoors()[i].isStatus() && !this.mainApp.getGears()[i].isMoving()){
+				door_opened_gear_moving = false;
+			}
 		}
-		else if(this.mainApp.getDoor().isMoving() && this.mainApp.getGear().isStatus()){
-			//cas porte se rentrant et gear sortie
-			System.out.println("dedans");
-			ot_d.setOnCancelled((WorkerStateEvent event) -> {
-				rt_d.restart();
-			});
-			ot_d.cancel();
-
+		if(door_opened_gear_moving) {
+			for(int i=0;i<3;i++) {
+				rt_g[i].setOnCancelled((WorkerStateEvent event) -> {
+					ot_g[i].restart();
+				});
+				rt_g[i].cancel();
+			}
 		}
-		else if (!this.mainApp.getDoor().isMoving() && !this.mainApp.getGear().isStatus()) {
-			//cas initial
-			frontDoor.setImage(door_moving);
-			ot_d.restart();
-			mainApp.getDoor().setMoving(true);
+		
+		//SI PORTE ENTRAIN DE SE FERMER ET LA ROUE EST BIEN AU CHAUD PPR
+		for(int i=0;i<3;i++) {
+			if(!this.mainApp.getDoors()[i].isMoving() && !this.mainApp.getGears()[i].isStatus()){
+				door_closing_gear_inside = false;
+			}
+		}
+		if(door_closing_gear_inside) {
+			for(int i=0;i<3;i++) {
+				ot_d[i].setOnCancelled((WorkerStateEvent event) -> {
+					rt_d[i].restart();
+				});
+				ot_d[i].cancel();
+			}
+		}
+		
+		//SI PORTE FERMEE ET LA ROUE EST TRKL DEDANS
+		for(int i=0;i<3;i++) {
+			if (this.mainApp.getDoors()[i].isMoving() && this.mainApp.getGears()[i].isStatus()) {
+				door_closed_gear_inside = false;
+			}
+		}
+		if(door_closed_gear_inside) {
+			for(int i=0;i<3;i++) {
+				imageViewDoors[i].setImage(door_moving);
+				ot_d[i].restart();
+				mainApp.getDoors()[i].setMoving(true);
+			}
 		}
 
 	}

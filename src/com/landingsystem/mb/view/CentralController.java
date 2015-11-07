@@ -265,12 +265,12 @@ public class CentralController {
 				if(rt_d_count==3){
 					for(int j=0;j<3;j++){
 						rt_d[j].reset();
-						this.mainApp.getDoors()[j].setStatus(false);
-						this.mainApp.getDoors()[j].setMoving(false);
-						imageViewDoors[j].setImage(door_closed);
 					}
 					rt_d_count=0;
 				}
+				this.mainApp.getDoors()[tmp].setStatus(false);
+				this.mainApp.getDoors()[tmp].setMoving(false);
+				imageViewDoors[tmp].setImage(door_closed);
 			});
 
 			ot_d[i].setOnSucceeded((WorkerStateEvent event) -> {
@@ -278,21 +278,22 @@ public class CentralController {
 				ot_d_count++;
 				if(ot_d_count==3){
 					for(int j=0;j<3;j++){
-						this.mainApp.getDoors()[j].setMoving(false);
-						this.mainApp.getDoors()[j].setStatus(true);
 						ot_d[j].reset();
-						imageViewDoors[j].setImage(door_opened);
-						imageViewGears[j].setImage(gear_moving);
-
-						if (!this.mainApp.getGears()[j].isStatus()) {
-							ot_g[j].restart();
-						} else {
-							rt_g[j].restart();
-						}
-						this.mainApp.getGears()[j].setMoving(true);
+						
 					}
 					ot_d_count=0;
 				}
+				this.mainApp.getDoors()[tmp].setMoving(false);
+				this.mainApp.getDoors()[tmp].setStatus(true);
+				imageViewDoors[tmp].setImage(door_opened);
+				imageViewGears[tmp].setImage(gear_moving);
+
+				if (!this.mainApp.getGears()[tmp].isStatus()) {
+					ot_g[tmp].restart();
+				} else {
+					rt_g[tmp].restart();
+				}
+				this.mainApp.getGears()[tmp].setMoving(true);
 				
 			});
 
@@ -300,18 +301,21 @@ public class CentralController {
 				rt_g_count++;
 				if(rt_g_count==3){
 					for(int j=0;j<3;j++){
-						this.mainApp.getGears()[j].setStatus(false);
-						this.mainApp.getGears()[j].setMoving(false);
+
 						rt_g[j].reset();
 
-						imageViewGears[j].setImage(gear_close);
-						imageViewDoors[j].setImage(door_moving);
 
 						rt_d[j].restart();
-						mainApp.getDoors()[j].setMoving(true);
+						
 					}
 					rt_g_count=0;
 				}
+				this.mainApp.getGears()[tmp].setStatus(false);
+				this.mainApp.getGears()[tmp].setMoving(false);
+
+				imageViewGears[tmp].setImage(gear_close);
+				imageViewDoors[tmp].setImage(door_moving);
+				mainApp.getDoors()[tmp].setMoving(true);
 				
 			});
 
@@ -320,18 +324,19 @@ public class CentralController {
 				if(ot_g_count==3){
 					for(int j=0;j<3;j++){
 						ot_g[j].reset();
-						this.mainApp.getGears()[j].setStatus(true);
-						this.mainApp.getGears()[j].setMoving(false);
-
-						imageViewGears[j].setImage(gear_opened);
-						imageViewDoors[j].setImage(door_moving);
+						
 
 						rt_d[j].restart();
-						mainApp.getDoors()[j].setMoving(true);
+						
 					}
 					ot_g_count=0;
 				}
+				this.mainApp.getGears()[tmp].setStatus(true);
+				this.mainApp.getGears()[tmp].setMoving(false);
 
+				imageViewGears[tmp].setImage(gear_opened);
+				imageViewDoors[tmp].setImage(door_moving);
+				mainApp.getDoors()[tmp].setMoving(true);
 			});
 		}
 	}

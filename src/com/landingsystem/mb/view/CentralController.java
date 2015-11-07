@@ -184,47 +184,46 @@ public class CentralController {
 				imageViewDoors[i].setImage(door_closed);
 			});
 			
-			ot_d.setOnSucceeded((WorkerStateEvent event) -> {
+			ot_d[i].setOnSucceeded((WorkerStateEvent event) -> {
 				System.out.println("porte ouverte");
-				this.mainApp.getDoor().setMoving(false);
-				this.mainApp.getDoor().setStatus(true);
-				ot_d.reset();
+				this.mainApp.getDoors()[i].setMoving(false);
+				this.mainApp.getDoors()[i].setStatus(true);
+				ot_d[i].reset();
 				
-				frontDoor.setImage(door_opened);
-				frontGear.setImage(gear_moving);
+				imageViewDoors[i].setImage(door_opened);
+				imageViewGears[i].setImage(gear_moving);
 				
-				if(!this.mainApp.getGear().isStatus()) {
-					ot_g.restart();
+				if(!this.mainApp.getGears()[i].isStatus()) {
+					ot_g[i].restart();
 				}
 				else {
-					rt_g.restart();
+					rt_g[i].restart();
 				}
-				this.mainApp.getGear().setMoving(true);
+				this.mainApp.getGears()[i].setMoving(true);
 			});
 			
-			rt_g.setOnSucceeded((WorkerStateEvent event) -> {
-				this.mainApp.getGear().setStatus(false);
-				this.mainApp.getGear().setMoving(false);
-				rt_g.reset();
+			rt_g[i].setOnSucceeded((WorkerStateEvent event) -> {
+				this.mainApp.getGears()[i].setStatus(false);
+				this.mainApp.getGears()[i].setMoving(false);
+				rt_g[i].reset();
 	
-				frontGear.setImage(gear_close);
-				frontDoor.setImage(door_moving);
+				imageViewGears[i].setImage(gear_close);
+				imageViewDoors[i].setImage(door_moving);
 				
-				rt_d.restart();
-				mainApp.getDoor().setMoving(true);
+				rt_d[i].restart();
+				mainApp.getDoors()[i].setMoving(true);
 			});
 			
-			ot_g.setOnSucceeded((WorkerStateEvent event) -> {
-				ot_g.reset();
-				this.mainApp.getGear().setStatus(true);
-				this.mainApp.getGear().setMoving(false);
-				System.out.println("down on succed");
+			ot_g[i].setOnSucceeded((WorkerStateEvent event) -> {
+				ot_g[i].reset();
+				this.mainApp.getGears()[i].setStatus(true);
+				this.mainApp.getGears()[i].setMoving(false);
 	
-				frontGear.setImage(gear_opened);
-				frontDoor.setImage(door_moving);
+				imageViewGears[i].setImage(gear_opened);
+				imageViewDoors[i].setImage(door_moving);
 				
-				rt_d.restart();
-				mainApp.getDoor().setMoving(true);
+				rt_d[i].restart();
+				mainApp.getDoors()[i].setMoving(true);
 			});
 		}
 	}

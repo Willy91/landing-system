@@ -115,16 +115,16 @@ public class CentralController {
 			}
 		}
 
-		// SI PORTE ENTRAIN DE SE FERMER ET LA ROUE EST BIEN AU CHAUD PPR
+		// SI PORTE ENTRAIN DE SE FERMER ET LA ROUE A L'INTERIEUR
 		for (int i = 0; i < 3; i++) {
-			if (!this.mainApp.getDoors()[i].isMoving() && !this.mainApp.getGears()[i].isStatus()) {
+			if (!this.mainApp.getDoors()[i].isMoving() && this.mainApp.getGears()[i].isStatus()) {
 				door_closing_gear_inside = false;
 			}
 		}
 
 		// SI PORTE FERMEE ET LA ROUE EST TRKL DEDANS
 		for (int i = 0; i < 3; i++) {
-			if (this.mainApp.getDoors()[i].isMoving() && this.mainApp.getGears()[i].isStatus()) {
+			if (!this.mainApp.getDoors()[i].isStatus() && this.mainApp.getGears()[i].isStatus()) {
 				door_closed_gear_inside = false;
 			}
 		}

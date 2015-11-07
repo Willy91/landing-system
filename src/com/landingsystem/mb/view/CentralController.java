@@ -40,10 +40,10 @@ public class CentralController {
 	private Main mainApp;
 	private Scene scene;
 	private boolean done;
-	private RetractingThread rt_g;
-	private OutgoingThread ot_d;
-	private OutgoingThread ot_g;
-	private RetractingThread rt_d;
+	private RetractingThread[] rt_g;
+	private OutgoingThread[] ot_d;
+	private OutgoingThread[] ot_g;
+	private RetractingThread[] rt_d;
 	private int timing;
 
 	private Text t_door;
@@ -131,7 +131,11 @@ public class CentralController {
 		this.scene = scene;
 		this.t_gear = (Text) this.scene.lookup("#front_gear_status");
 		this.t_door = (Text) this.scene.lookup("#front_gear_status");
-		ot_d = new OutgoingThread(this.mainApp.getDoor());
+		
+		ot_d = new OutgoingThread[]{ new OutgoingThread(this.mainApp.getDoors()[0]),
+				new OutgoingThread(this.mainApp.getDoors()[1]),
+				new OutgoingThread(this.mainApp.getDoors()[2])};
+		
 		ot_g = new OutgoingThread(this.mainApp.getGear());
 		rt_g = new RetractingThread(this.mainApp.getGear());
 		rt_d = new RetractingThread(this.mainApp.getDoor());

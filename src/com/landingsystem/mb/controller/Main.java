@@ -55,7 +55,7 @@ public class Main extends Application {
 		launch(args);
 	}
 
-	public Gear getGear() {
+	public Gear[] getGears() {
 		return gear;
 	}
 
@@ -63,7 +63,7 @@ public class Main extends Application {
 		this.gear = gear;
 	}
 
-	public Door getDoor() {
+	public Door[] getDoors() {
 		return door;
 	}
 

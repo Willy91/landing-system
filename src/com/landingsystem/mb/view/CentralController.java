@@ -57,6 +57,11 @@ public class CentralController {
 	private Image gear_opened;
 	private Image gear_moving;
 
+	int rt_d_count = 0;
+	int ot_d_count=0;
+	int rt_g_count=0;
+	int ot_g_count=0;
+	
 	public CentralController() {
 		this.timing = 0; // temps de retractation des roues
 		this.done = false;
@@ -251,54 +256,82 @@ public class CentralController {
 				new RetractingThread(this.mainApp.getDoors()[0]),
 				new RetractingThread(this.mainApp.getDoors()[1]),
 				new RetractingThread(this.mainApp.getDoors()[2]) };
+		
+
 		for (int i = 0; i < 3; i++) {
 			final int tmp = i;
 			rt_d[i].setOnSucceeded((WorkerStateEvent event) -> {
-				rt_d[tmp].reset();
-				this.mainApp.getDoors()[tmp].setStatus(false);
-				this.mainApp.getDoors()[tmp].setMoving(false);
-
-				imageViewDoors[tmp].setImage(door_closed);
+				rt_d_count++;
+				if(rt_d_count==3){
+					for(int j=0;j<3;j++){
+						rt_d[j].reset();
+						this.mainApp.getDoors()[j].setStatus(false);
+						this.mainApp.getDoors()[j].setMoving(false);
+						imageViewDoors[j].setImage(door_closed);
+					}
+					rt_d_count=0;
+				}
 			});
 
 			ot_d[i].setOnSucceeded((WorkerStateEvent event) -> {
 				System.out.println("porte ouverte");
-				this.mainApp.getDoors()[tmp].setMoving(false);
-				this.mainApp.getDoors()[tmp].setStatus(true);
-				ot_d[tmp].reset();
-				imageViewDoors[tmp].setImage(door_opened);
-				imageViewGears[tmp].setImage(gear_moving);
+				ot_d_count++;
+				if(ot_d_count==3){
+					for(int j=0;j<3;j++){
+						this.mainApp.getDoors()[j].setMoving(false);
+						this.mainApp.getDoors()[j].setStatus(true);
+						ot_d[j].reset();
+						imageViewDoors[j].setImage(door_opened);
+						imageViewGears[j].setImage(gear_moving);
 
-				if (!this.mainApp.getGears()[tmp].isStatus()) {
-					ot_g[tmp].restart();
-				} else {
-					rt_g[tmp].restart();
+						if (!this.mainApp.getGears()[j].isStatus()) {
+							ot_g[j].restart();
+						} else {
+							rt_g[j].restart();
+						}
+						this.mainApp.getGears()[j].setMoving(true);
+					}
+					ot_d_count=0;
 				}
-				this.mainApp.getGears()[tmp].setMoving(true);
+				
 			});
 
 			rt_g[i].setOnSucceeded((WorkerStateEvent event) -> {
-				this.mainApp.getGears()[tmp].setStatus(false);
-				this.mainApp.getGears()[tmp].setMoving(false);
-				rt_g[tmp].reset();
+				rt_g_count++;
+				if(rt_g_count==3){
+					for(int j=0;j<3;j++){
+						this.mainApp.getGears()[j].setStatus(false);
+						this.mainApp.getGears()[j].setMoving(false);
+						rt_g[j].reset();
 
-				imageViewGears[tmp].setImage(gear_close);
-				imageViewDoors[tmp].setImage(door_moving);
+						imageViewGears[j].setImage(gear_close);
+						imageViewDoors[j].setImage(door_moving);
 
-				rt_d[tmp].restart();
-				mainApp.getDoors()[tmp].setMoving(true);
+						rt_d[j].restart();
+						mainApp.getDoors()[j].setMoving(true);
+					}
+					rt_g_count=0;
+				}
+				
 			});
 
 			ot_g[i].setOnSucceeded((WorkerStateEvent event) -> {
-				ot_g[tmp].reset();
-				this.mainApp.getGears()[tmp].setStatus(true);
-				this.mainApp.getGears()[tmp].setMoving(false);
+				ot_g_count++;
+				if(ot_g_count==3){
+					for(int j=0;j<3;j++){
+						ot_g[j].reset();
+						this.mainApp.getGears()[j].setStatus(true);
+						this.mainApp.getGears()[j].setMoving(false);
 
-				imageViewGears[tmp].setImage(gear_opened);
-				imageViewDoors[tmp].setImage(door_moving);
+						imageViewGears[j].setImage(gear_opened);
+						imageViewDoors[j].setImage(door_moving);
 
-				rt_d[tmp].restart();
-				mainApp.getDoors()[tmp].setMoving(true);
+						rt_d[j].restart();
+						mainApp.getDoors()[j].setMoving(true);
+					}
+					ot_g_count=0;
+				}
+
 			});
 		}
 	}

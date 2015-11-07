@@ -37,6 +37,8 @@ public class CentralController {
 	@FXML
 	private ImageView frontGear;
 
+	private ImageView[] imageViewDoors;
+	private ImageView[] imageViewGears;
 	private Main mainApp;
 	private Scene scene;
 	private boolean done;
@@ -65,7 +67,9 @@ public class CentralController {
 		gear_close = new Image("file:res/gear2_retracted.jpg");
 		gear_moving = new Image("file:res/gear2_moving.jpg");
 		gear_opened = new Image("file:res/gear2_extracted.jpg");
-
+		
+		imageViewDoors = new ImageView[]{frontDoor,leftDoor,rightDoor};
+		imageViewGears = new ImageView[]{frontGear,leftGear,rightGear};
 	}
 
 	@FXML

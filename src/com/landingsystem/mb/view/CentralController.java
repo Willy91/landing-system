@@ -68,19 +68,18 @@ public class CentralController {
 		gear_moving = new Image("file:res/gear2_moving.jpg");
 		gear_opened = new Image("file:res/gear2_extracted.jpg");
 		
-		imageViewDoors = new ImageView[]{frontDoor,leftDoor,rightDoor};
-		imageViewGears = new ImageView[]{frontGear,leftGear,rightGear};
 	}
 
 	@FXML
 	private void handleUpButton() {
 		System.out.println("up");
-		frontDoor.setImage(door_moving);
 		boolean ok = true;
 		// unlock in down position 0,8s
 		// 1,6s mouvement
 		// 0,4s de fin
 		for(int i=0;i<3;i++) {
+			imageViewDoors[i].setImage(door_moving);
+
 			if(!this.mainApp.getGears()[i].isStatus()) {
 				ok = false;
 			}
@@ -171,7 +170,10 @@ public class CentralController {
 		this.scene = scene;
 		this.t_gear = (Text) this.scene.lookup("#front_gear_status");
 		this.t_door = (Text) this.scene.lookup("#front_gear_status");
-		
+		imageViewDoors = new ImageView[]{(ImageView)scene.lookup("#frontDoor"),
+				(ImageView)scene.lookup("#leftDoor"),
+				(ImageView)scene.lookup("#rightDoor")};
+		imageViewGears = new ImageView[]{frontGear,leftGear,rightGear};
 		ot_d = new OutgoingThread[]{
 				new OutgoingThread(this.mainApp.getDoors()[0]),
 				new OutgoingThread(this.mainApp.getDoors()[1]),
@@ -208,7 +210,6 @@ public class CentralController {
 				this.mainApp.getDoors()[tmp].setMoving(false);
 				this.mainApp.getDoors()[tmp].setStatus(true);
 				ot_d[tmp].reset();
-				
 				imageViewDoors[tmp].setImage(door_opened);
 				imageViewGears[tmp].setImage(gear_moving);
 				

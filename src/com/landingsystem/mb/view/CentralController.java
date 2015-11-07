@@ -67,7 +67,7 @@ public class CentralController {
 		gear_close = new Image("file:res/gear2_retracted.jpg");
 		gear_moving = new Image("file:res/gear2_moving.jpg");
 		gear_opened = new Image("file:res/gear2_extracted.jpg");
-		
+
 	}
 
 	@FXML
@@ -77,15 +77,15 @@ public class CentralController {
 		// unlock in down position 0,8s
 		// 1,6s mouvement
 		// 0,4s de fin
-		for(int i=0;i<3;i++) {
+		for (int i = 0; i < 3; i++) {
 			imageViewDoors[i].setImage(door_moving);
 
-			if(!this.mainApp.getGears()[i].isStatus()) {
+			if (!this.mainApp.getGears()[i].isStatus()) {
 				ok = false;
 			}
 		}
-		if(ok) {
-			for(int i=0;i<3;i++) {
+		if (ok) {
+			for (int i = 0; i < 3; i++) {
 				ot_d[i].restart();
 				mainApp.getDoors()[i].setMoving(true);
 			}
@@ -95,20 +95,43 @@ public class CentralController {
 	@FXML
 	private void handleDownButton() {
 		System.out.println("down");
-		boolean door_opening_gear_extracted = true; //ETAPE UNE DE UP
-		boolean door_opened_gear_moving = true; //ETAPE 2 DE UP
-		boolean door_closing_gear_inside = true; //ETAPE 3 DE UP
-		boolean door_closed_gear_inside = true; //ETAPE 4 DE UP, ETAPE INITIALE DE DOWN
-		
-		
-		//SI PORTE EN COURS D OUVERTURE ET ROUE ENCORE EXTERIEUR
-		for(int i=0;i<3;i++) {
-			if(!this.mainApp.getDoors()[i].isMoving() && this.mainApp.getGears()[i].isStatus()){
+		boolean door_opening_gear_extracted = true; // ETAPE UNE DE UP
+		boolean door_opened_gear_moving = true; // ETAPE 2 DE UP
+		boolean door_closing_gear_inside = true; // ETAPE 3 DE UP
+		boolean door_closed_gear_inside = true; // ETAPE 4 DE UP, ETAPE INITIALE
+												// DE DOWN
+
+		// SI PORTE EN COURS D OUVERTURE ET ROUE ENCORE EXTERIEUR
+		for (int i = 0; i < 3; i++) {
+			if (!this.mainApp.getDoors()[i].isMoving() && this.mainApp.getGears()[i].isStatus()) {
 				door_opening_gear_extracted = false;
-			}	
+			}
 		}
-		if(door_opening_gear_extracted) {
-			for(int i=0;i<3;i++) {
+
+		// SI PORTE OUVERTE ET ROUE ENTRAIN DE RENTRER
+		for (int i = 0; i < 3; i++) {
+			if (!this.mainApp.getDoors()[i].isStatus() && !this.mainApp.getGears()[i].isMoving()) {
+				door_opened_gear_moving = false;
+			}
+		}
+
+		// SI PORTE ENTRAIN DE SE FERMER ET LA ROUE EST BIEN AU CHAUD PPR
+		for (int i = 0; i < 3; i++) {
+			if (!this.mainApp.getDoors()[i].isMoving() && !this.mainApp.getGears()[i].isStatus()) {
+				door_closing_gear_inside = false;
+			}
+		}
+
+		// SI PORTE FERMEE ET LA ROUE EST TRKL DEDANS
+		for (int i = 0; i < 3; i++) {
+			if (this.mainApp.getDoors()[i].isMoving() && this.mainApp.getGears()[i].isStatus()) {
+				door_closed_gear_inside = false;
+			}
+		}
+		
+		if (door_opening_gear_extracted) {
+			System.out.println("dans 1");
+			for (int i = 0; i < 3; i++) {
 				final int tmp = i;
 				rt_d[i].setOnCancelled((WorkerStateEvent event) -> {
 					ot_d[tmp].restart();
@@ -116,15 +139,10 @@ public class CentralController {
 				rt_d[i].cancel();
 			}
 		}
-		
-		//SI PORTE OUVERTE ET ROUE ENTRAIN DE RENTRER CHEZ ELLE OKLM
-		for(int i=0;i<3;i++) {
-			if(!this.mainApp.getDoors()[i].isStatus() && !this.mainApp.getGears()[i].isMoving()){
-				door_opened_gear_moving = false;
-			}
-		}
-		if(door_opened_gear_moving) {
-			for(int i=0;i<3;i++) {
+
+		else if (door_opened_gear_moving) {
+			System.out.println("dans 2");
+			for (int i = 0; i < 3; i++) {
 				final int tmp = i;
 				rt_g[i].setOnCancelled((WorkerStateEvent event) -> {
 					ot_g[tmp].restart();
@@ -132,15 +150,11 @@ public class CentralController {
 				rt_g[i].cancel();
 			}
 		}
-		
-		//SI PORTE ENTRAIN DE SE FERMER ET LA ROUE EST BIEN AU CHAUD PPR
-		for(int i=0;i<3;i++) {
-			if(!this.mainApp.getDoors()[i].isMoving() && !this.mainApp.getGears()[i].isStatus()){
-				door_closing_gear_inside = false;
-			}
-		}
-		if(door_closing_gear_inside) {
-			for(int i=0;i<3;i++) {
+
+		else if (door_closing_gear_inside) {
+			System.out.println("dans 3");
+
+			for (int i = 0; i < 3; i++) {
 				final int tmp = i;
 				ot_d[i].setOnCancelled((WorkerStateEvent event) -> {
 					rt_d[tmp].restart();
@@ -148,21 +162,16 @@ public class CentralController {
 				ot_d[i].cancel();
 			}
 		}
-		
-		//SI PORTE FERMEE ET LA ROUE EST TRKL DEDANS
-		for(int i=0;i<3;i++) {
-			if (this.mainApp.getDoors()[i].isMoving() && this.mainApp.getGears()[i].isStatus()) {
-				door_closed_gear_inside = false;
-			}
-		}
-		if(door_closed_gear_inside) {
-			for(int i=0;i<3;i++) {
+
+		else if (door_closed_gear_inside) {
+			System.out.println("dans 4");
+
+			for (int i = 0; i < 3; i++) {
 				imageViewDoors[i].setImage(door_moving);
 				ot_d[i].restart();
 				mainApp.getDoors()[i].setMoving(true);
 			}
 		}
-
 	}
 
 	public void setMainApp(Main mainApp, Scene scene) {
@@ -170,41 +179,38 @@ public class CentralController {
 		this.scene = scene;
 		this.t_gear = (Text) this.scene.lookup("#front_gear_status");
 		this.t_door = (Text) this.scene.lookup("#front_gear_status");
-		imageViewDoors = new ImageView[]{(ImageView)scene.lookup("#frontDoor"),
-				(ImageView)scene.lookup("#leftDoor"),
-				(ImageView)scene.lookup("#rightDoor")};
-		imageViewGears = new ImageView[]{frontGear,leftGear,rightGear};
-		ot_d = new OutgoingThread[]{
+		imageViewDoors = new ImageView[] {
+				(ImageView) scene.lookup("#frontDoor"),
+				(ImageView) scene.lookup("#leftDoor"),
+				(ImageView) scene.lookup("#rightDoor") };
+		imageViewGears = new ImageView[] { frontGear, leftGear, rightGear };
+		ot_d = new OutgoingThread[] {
 				new OutgoingThread(this.mainApp.getDoors()[0]),
 				new OutgoingThread(this.mainApp.getDoors()[1]),
-				new OutgoingThread(this.mainApp.getDoors()[2])
-				};
-		
-		ot_g = new OutgoingThread[]{
+				new OutgoingThread(this.mainApp.getDoors()[2]) };
+
+		ot_g = new OutgoingThread[] {
 				new OutgoingThread(this.mainApp.getGears()[0]),
 				new OutgoingThread(this.mainApp.getGears()[1]),
-				new OutgoingThread(this.mainApp.getGears()[2])
-				};
-		
-		rt_g = new RetractingThread[]{
+				new OutgoingThread(this.mainApp.getGears()[2]) };
+
+		rt_g = new RetractingThread[] {
 				new RetractingThread(this.mainApp.getGears()[0]),
 				new RetractingThread(this.mainApp.getGears()[1]),
-				new RetractingThread(this.mainApp.getGears()[2])
-				};
-		
-		rt_d = new RetractingThread[]{
+				new RetractingThread(this.mainApp.getGears()[2]) };
+
+		rt_d = new RetractingThread[] {
 				new RetractingThread(this.mainApp.getDoors()[0]),
 				new RetractingThread(this.mainApp.getDoors()[1]),
-				new RetractingThread(this.mainApp.getDoors()[2])
-				};
-		for(int i=0;i<3;i++){
+				new RetractingThread(this.mainApp.getDoors()[2]) };
+		for (int i = 0; i < 3; i++) {
 			final int tmp = i;
 			rt_d[i].setOnSucceeded((WorkerStateEvent event) -> {
 				rt_d[tmp].reset();
 				this.mainApp.getDoors()[tmp].setStatus(false);
 				imageViewDoors[tmp].setImage(door_closed);
 			});
-			
+
 			ot_d[i].setOnSucceeded((WorkerStateEvent event) -> {
 				System.out.println("porte ouverte");
 				this.mainApp.getDoors()[tmp].setMoving(false);
@@ -212,36 +218,35 @@ public class CentralController {
 				ot_d[tmp].reset();
 				imageViewDoors[tmp].setImage(door_opened);
 				imageViewGears[tmp].setImage(gear_moving);
-				
-				if(!this.mainApp.getGears()[tmp].isStatus()) {
+
+				if (!this.mainApp.getGears()[tmp].isStatus()) {
 					ot_g[tmp].restart();
-				}
-				else {
+				} else {
 					rt_g[tmp].restart();
 				}
 				this.mainApp.getGears()[tmp].setMoving(true);
 			});
-			
+
 			rt_g[i].setOnSucceeded((WorkerStateEvent event) -> {
 				this.mainApp.getGears()[tmp].setStatus(false);
 				this.mainApp.getGears()[tmp].setMoving(false);
 				rt_g[tmp].reset();
-	
+
 				imageViewGears[tmp].setImage(gear_close);
 				imageViewDoors[tmp].setImage(door_moving);
-				
+
 				rt_d[tmp].restart();
 				mainApp.getDoors()[tmp].setMoving(true);
 			});
-			
+
 			ot_g[i].setOnSucceeded((WorkerStateEvent event) -> {
 				ot_g[tmp].reset();
 				this.mainApp.getGears()[tmp].setStatus(true);
 				this.mainApp.getGears()[tmp].setMoving(false);
-	
+
 				imageViewGears[tmp].setImage(gear_opened);
 				imageViewDoors[tmp].setImage(door_moving);
-				
+
 				rt_d[tmp].restart();
 				mainApp.getDoors()[tmp].setMoving(true);
 			});

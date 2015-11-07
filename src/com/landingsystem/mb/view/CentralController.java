@@ -76,12 +76,8 @@ public class CentralController {
 		// 1,6s mouvement
 		// 0,4s de fin
 		if (this.mainApp.getGear().isStatus()) {
-			
-			
-
 			ot_d.restart();
 			mainApp.getDoor().setMoving(true);
-
 		}
 	}
 

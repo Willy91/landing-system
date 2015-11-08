@@ -3,7 +3,6 @@ package com.landingsystem.mb.view;
 import com.landingsystem.mb.controller.Main;
 import com.landingsystem.mb.model.OutgoingThread;
 import com.landingsystem.mb.model.RetractingThread;
-
 import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -11,6 +10,11 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+/**
+ * Controller updating view and managing threads
+ * @author william
+ *
+ */
 public class CentralController {
 
 	@FXML
@@ -62,6 +66,9 @@ public class CentralController {
 	int rt_g_count=0;
 	int ot_g_count=0;
 	
+	/**
+	 * Default constructor, loading pictures
+	 */
 	public CentralController() {
 		this.timing = 0; // temps de retractation des roues
 		this.done = false;
@@ -79,9 +86,11 @@ public class CentralController {
 		light_green = new Image("file:res/feu_vert.jpg");
 	}
 
+	/**
+	 * Listener for the up button. Checking the state then lauching right threads
+	 */
 	@FXML
 	private void handleUpButton() {
-		System.out.println("up");
 		boolean door_opening_gear_inside = false; // ETAPE UNE DE DOWN
 		boolean door_opened_gear_moving = false; // ETAPE 2 DE DOWN
 		boolean door_closing_gear_outside = false; // ETAPE 3 DE DOWN
@@ -104,14 +113,13 @@ public class CentralController {
 				door_closing_gear_outside = true;
 			}
 			
-			// SI PORTE FERMEE ET LA ROUE EST TRKL DEDANS
+			// SI PORTE FERMEE ET LA ROUE INTERIEUR
 			if (!this.mainApp.getDoors()[i].isStatus() && this.mainApp.getGears()[i].isStatus()) {
 				door_closed_gear_outside = true;
 			}
 		}
 		
 		if (door_opening_gear_inside) {
-			System.out.println("dans 1");
 			for (int i = 0; i < 3; i++) {
 				final int tmp = i;
 				ot_d[i].setOnCancelled((WorkerStateEvent event) -> {
@@ -122,7 +130,6 @@ public class CentralController {
 		}
 
 		else if (door_opened_gear_moving) {
-			System.out.println("dans 2");
 			for (int i = 0; i < 3; i++) {
 				final int tmp = i;
 				ot_g[i].setOnCancelled((WorkerStateEvent event) -> {
@@ -133,7 +140,6 @@ public class CentralController {
 		}
 
 		else if (door_closing_gear_outside) {
-			System.out.println("dans 3");
 
 			for (int i = 0; i < 3; i++) {
 				final int tmp = i;
@@ -144,9 +150,7 @@ public class CentralController {
 			}
 		}
 
-		else if (door_closed_gear_outside) {
-			System.out.println("dans 4");
-			
+		else if (door_closed_gear_outside) {			
 
 			for (int i = 0; i < 3; i++) {
 				imageViewDoors[i].setImage(door_moving);
@@ -157,9 +161,11 @@ public class CentralController {
 		}
 	}
 
+	/**
+	 * Listener for the down button. Checking the state then lauching right threads
+	 */
 	@FXML
 	private void handleDownButton() {
-		System.out.println("down");
 		boolean door_opening_gear_extracted = false; // ETAPE UNE DE UP
 		boolean door_opened_gear_moving = false; // ETAPE 2 DE UP
 		boolean door_closing_gear_inside = false; // ETAPE 3 DE UP
@@ -182,7 +188,7 @@ public class CentralController {
 				door_closing_gear_inside = true;
 			}
 			
-			// SI PORTE FERMEE ET LA ROUE EST TRKL DEDANS
+			// SI PORTE FERMEE ET LA ROUE A L'INTERIEUR
 			if (!this.mainApp.getDoors()[i].isStatus() && !this.mainApp.getGears()[i].isStatus()) {
 				door_closed_gear_inside = true;
 			}
@@ -234,6 +240,11 @@ public class CentralController {
 		}
 	}
 
+	/**
+	 * Creating threads, linking Main class to access Gears and Doors and setting up the callback for our threads
+	 * @param mainApp Main class reference
+	 * @param scene Scene, used to update pictures
+	 */
 	public void setMainApp(Main mainApp, Scene scene) {
 		this.mainApp = mainApp;
 		this.scene = scene;

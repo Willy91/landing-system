@@ -60,16 +60,4 @@ public abstract class CentralThread extends Service<Integer> {
 		};
 	}
 
-	/*
-	 * public void run() { while (timing < MAX_TIME && !done && flag) {
-	 * System.out.println(true); try { Thread.sleep(10); } catch
-	 * (InterruptedException e) { e.printStackTrace(); }
-	 * 
-	 * timing++; // System.out.println(timing);
-	 * 
-	 * if (timing == USUAL_TIME) { this.done = true;
-	 * this.el.setStatus(!this.el.isStatus()); } }
-	 * System.out.println(this.el.isStatus()); }
-	 */
-
 }

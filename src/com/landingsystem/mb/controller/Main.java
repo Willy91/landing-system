@@ -95,7 +95,7 @@ public class Main extends Application {
 	
 	/**
 	 * Update door array at a precise index
-	 * @param gear Door object we want to put in array
+	 * @param door Door object we want to put in array
 	 * @param index Where we want to put the Door object
 	 */
 	public void setDoor(Door door, int index) {

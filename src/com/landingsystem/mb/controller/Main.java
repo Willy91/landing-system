@@ -10,6 +10,11 @@ import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.fxml.FXMLLoader;
 
+/**
+ * 
+ * @author william
+ * Main class, containing static variables for times and launching our controller
+ */
 public class Main extends Application {
 	private Gear[] gears;
 	private Door[] doors;
@@ -22,6 +27,10 @@ public class Main extends Application {
 	private static int SIDE_DOOR_RETRACTING = 190;
 	private static int SIDE_DOOR_OUTGOING = 190;
 
+	
+	/**
+	 * Called with launch method in main
+	 */
 	@Override
 	public void start(Stage primaryStage) {
 		this.gears = new Gear[] {
@@ -48,23 +57,47 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 	}
-
+	
+	
+	/**
+	 * Starting application
+	 * @param args sending param by console, useless in our app
+	 */
 	public static void main(String[] args) {
 		launch(args);
 	}
-
+	
+	/**
+	 * Get gears array
+	 * @return the three gears of our plane in an array
+	 */
 	public Gear[] getGears() {
 		return gears;
 	}
 
+	/**
+	 * Update gear array at a precise index
+	 * @param gear Gear object we want to put in array
+	 * @param index Where we want to put the Gear object
+	 */
 	public void setGear(Gear gear, int index) {
 		this.gears[index] = gear;
 	}
+	
+	/**
+	 * Get all 3 doors of our system
+	 * @return Door object array
+	 */
 
 	public Door[] getDoors() {
 		return doors;
 	}
-
+	
+	/**
+	 * Update door array at a precise index
+	 * @param gear Door object we want to put in array
+	 * @param index Where we want to put the Door object
+	 */
 	public void setDoor(Door door, int index) {
 		this.doors[index] = door;
 	}

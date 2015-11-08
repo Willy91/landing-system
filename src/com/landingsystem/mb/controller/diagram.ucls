@@ -12,7 +12,7 @@
   </class>  
   <class id="2" language="java" name="com.landingsystem.mb.model.Element" project="LandingSystem" 
     file="/LandingSystem/src/com/landingsystem/mb/model/Element.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="809" y="564"/>    
+    <position height="-1" width="-1" x="639" y="544"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -21,7 +21,7 @@
   </class>  
   <class id="3" language="java" name="com.landingsystem.mb.model.Gear" project="LandingSystem" 
     file="/LandingSystem/src/com/landingsystem/mb/model/Gear.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="573" y="828"/>    
+    <position height="-1" width="-1" x="485" y="816"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -39,7 +39,7 @@
   </class>  
   <class id="5" language="java" name="com.landingsystem.mb.model.Door" project="LandingSystem" 
     file="/LandingSystem/src/com/landingsystem/mb/model/Door.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="769" y="827"/>    
+    <position height="-1" width="-1" x="642" y="814"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -48,7 +48,7 @@
   </class>  
   <class id="6" language="java" name="com.landingsystem.mb.model.CentralThread" project="LandingSystem" 
     file="/LandingSystem/src/com/landingsystem/mb/model/CentralThread.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="757" y="140"/>    
+    <position height="-1" width="-1" x="596" y="100"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -57,7 +57,7 @@
   </class>  
   <class id="7" language="java" name="com.landingsystem.mb.model.RetractingThread" project="LandingSystem" 
     file="/LandingSystem/src/com/landingsystem/mb/model/RetractingThread.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="804" y="346"/>    
+    <position height="-1" width="-1" x="703" y="301"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      

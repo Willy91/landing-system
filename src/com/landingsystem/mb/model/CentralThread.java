@@ -2,7 +2,11 @@ package com.landingsystem.mb.model;
 
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-
+/**
+ * 
+ * @author grosalex
+ * This is the basic element of an action
+ */
 public abstract class CentralThread extends Service<Integer> {
 
 	protected int USUAL_TIME;
@@ -11,12 +15,18 @@ public abstract class CentralThread extends Service<Integer> {
 	private boolean done;
 	public volatile boolean flag;
 
+	/**
+	 * Default constructor
+	 * @param el the subject element of the action
+	 */
 	public CentralThread(Element el) {
 		this.timing = 0;
 		this.done = false;
 		this.flag = true;
 	}
-
+	/**
+	 * the action
+	 */
 	@Override
 	protected Task<Integer> createTask() {
 		return new Task<Integer>() {

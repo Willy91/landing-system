@@ -1,10 +1,6 @@
 package com.landingsystem.mb.view;
 
-import java.io.File;
-
 import com.landingsystem.mb.controller.Main;
-import com.landingsystem.mb.model.Door;
-import com.landingsystem.mb.model.Gear;
 import com.landingsystem.mb.model.OutgoingThread;
 import com.landingsystem.mb.model.RetractingThread;
 
@@ -14,7 +10,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.text.Text;
 
 public class CentralController {
 
@@ -36,6 +31,8 @@ public class CentralController {
 	private ImageView rightGear;
 	@FXML
 	private ImageView frontGear;
+	@FXML
+	private ImageView light;
 
 	private ImageView[] imageViewDoors;
 	private ImageView[] imageViewGears;
@@ -48,14 +45,17 @@ public class CentralController {
 	private RetractingThread[] rt_d;
 	private int timing;
 
-	private Text t_door;
-	private Text t_gear;
+	
 	private Image door_closed;
 	private Image door_opened;
 	private Image door_moving;
 	private Image gear_close;
 	private Image gear_opened;
 	private Image gear_moving;
+	private Image light_empty;
+	private Image light_red;
+	private Image light_green;
+	private Image light_orange;
 
 	int rt_d_count = 0;
 	int ot_d_count=0;
@@ -72,7 +72,11 @@ public class CentralController {
 		gear_close = new Image("file:res/gear2_retracted.jpg");
 		gear_moving = new Image("file:res/gear2_moving.jpg");
 		gear_opened = new Image("file:res/gear2_extracted.jpg");
-
+		
+		light_empty = new Image("file:res/feu_vide.jpg");
+		light_red = new Image("file:res/feu_rouge.jpg");
+		light_orange = new Image("file:res/feu_orange.jpg");
+		light_green = new Image("file:res/feu_vert.jpg");
 	}
 
 	@FXML
@@ -142,9 +146,11 @@ public class CentralController {
 
 		else if (door_closed_gear_outside) {
 			System.out.println("dans 4");
+			
 
 			for (int i = 0; i < 3; i++) {
 				imageViewDoors[i].setImage(door_moving);
+				light.setImage(light_orange);
 				ot_d[i].restart();
 				mainApp.getDoors()[i].setMoving(true);
 			}
@@ -221,6 +227,7 @@ public class CentralController {
 
 			for (int i = 0; i < 3; i++) {
 				imageViewDoors[i].setImage(door_moving);
+				light.setImage(light_orange);
 				ot_d[i].restart();
 				mainApp.getDoors()[i].setMoving(true);
 			}
@@ -230,8 +237,7 @@ public class CentralController {
 	public void setMainApp(Main mainApp, Scene scene) {
 		this.mainApp = mainApp;
 		this.scene = scene;
-		this.t_gear = (Text) this.scene.lookup("#front_gear_status");
-		this.t_door = (Text) this.scene.lookup("#front_gear_status");
+		
 		imageViewDoors = new ImageView[] {
 				(ImageView) scene.lookup("#frontDoor"),
 				(ImageView) scene.lookup("#leftDoor"),
@@ -267,10 +273,12 @@ public class CentralController {
 						rt_d[j].reset();
 					}
 					rt_d_count=0;
+					light.setImage(light_green);
 				}
 				this.mainApp.getDoors()[tmp].setStatus(false);
 				this.mainApp.getDoors()[tmp].setMoving(false);
 				imageViewDoors[tmp].setImage(door_closed);
+				
 			});
 
 			ot_d[i].setOnSucceeded((WorkerStateEvent event) -> {
